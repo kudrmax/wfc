@@ -12,6 +12,8 @@ const int H = 800;
 const int BLOCK_SIZE = 200;
 const int BLOCK_COUNT = 4;
 
+
+
 struct Tile {
     Tile() = default;
     Tile(sf::Vector2f pos) {
@@ -40,7 +42,7 @@ struct Tile {
         m_texture.loadFromFile(texture_path);
         m_body.setTexture(&m_texture);
     }
-    void update () {
+    void update() {
         if (!m_font.loadFromFile("PixelFont.ttf"))
             throw std::runtime_error("No such file in directory");
         m_text.setFont(m_font);
@@ -68,6 +70,16 @@ struct Tile {
     sf::Text m_text;
 };
 
+//auto comparator_for_tails = [](const Tile& a, const Tile& b){
+//    return a.m_sides.size() < b.m_sides.size();
+//};
+//
+//struct comparator_for_tails {
+//    bool operator()(const Tile& a, const Tile& b) const {
+//        return a.m_sides.size() < b.m_sides.size();
+//    }
+//};
+
 
 int main() {
 
@@ -88,7 +100,19 @@ int main() {
     }
     for (auto& row: tiles)
         for (auto& tile: row)
-                tile->set_texture();
+            tile->set_texture();
+
+    auto* min_tile = tiles[0][0].get();
+    auto comparator_for_tails = [](const Tile& a, const Tile& b){
+        return a.m_sides.size() <= b.m_sides.size();
+    };
+    for (int row = 0; row < BLOCK_COUNT; row++) {
+        for (int col = 0; col < BLOCK_COUNT; col++) {
+            if (comparator_for_tails(*min_tile, *tiles[row][col]))
+                min_tile = tiles[row][col].get();
+        }
+    }
+    min_tile->m_sides.pop_back();
 
     while (window.isOpen()) {
         sf::Event event;
