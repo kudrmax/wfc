@@ -27,12 +27,12 @@ void create_cells(cells_t& cells) {
 
 Cell* find_min_entropy(const cells_t& cells) {
     auto compare_entropy = [](const Cell& a, const Cell& b) {
-        return a.m_sides.size() <= b.m_sides.size();
+        return b.is_collapsed || a.m_sides.size() < b.m_sides.size();
     };
     Cell* min_cell_p = cells[0][0].get();
     for (int row = 0; row < BLOCK_COUNT; row++) {
         for (int col = 0; col < BLOCK_COUNT; col++) {
-            if (compare_entropy(*min_cell_p, *cells[row][col]))
+            if (compare_entropy(*cells[row][col], *min_cell_p))
                 min_cell_p = cells[row][col].get();
         }
     }
@@ -47,8 +47,12 @@ int main() {
     std::vector<std::vector<std::unique_ptr<Cell>>> cells;
     create_cells(cells);
 
-    auto* min_cell_p = find_min_entropy(cells);
-    min_cell_p->m_sides.pop_back();
+    for (int i = 0; i < 7; i++) {
+        auto* min_cell_p = find_min_entropy(cells);
+
+        min_cell_p->m_sides.pop_back();
+        min_cell_p->update();
+    }
 
     while (window.isOpen()) {
         sf::Event event;
@@ -59,11 +63,10 @@ int main() {
 
         window.clear();
         for (auto& row: cells)
-            for (auto& tile: row) {
-                tile->update();
-                tile->draw_into(window);
+            for (auto& cell: row) {
+                cell->draw_into(window);
+                cell->update();
             }
-//        window.draw(shape);
         window.display();
     }
 

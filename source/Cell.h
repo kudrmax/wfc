@@ -33,11 +33,16 @@ struct Cell {
         m_body.setTexture(&m_texture);
     }
     void update() {
+        if (m_sides.size() == 1)
+            is_collapsed = true;
+        update_text();
+    }
+    void update_text() {
         if (!m_font.loadFromFile("PixelFont.ttf"))
             throw std::runtime_error("No such file in directory");
         m_text.setFont(m_font);
-        m_text.setString(std::to_string(m_sides.size()));
-        m_text.setCharacterSize(100);
+        m_text.setString(std::to_string(is_collapsed) + "\n" + std::to_string(m_sides.size()));
+        m_text.setCharacterSize(60);
         auto textRect = m_text.getLocalBounds();
         m_text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
         m_text.setPosition(m_body.getPosition());
@@ -54,6 +59,7 @@ struct Cell {
     };
 //    std::vector<SIDE> m_sides = { DOWN };
     std::vector<SIDE> m_sides = { BLANK, LEFT, UP, RIGHT, DOWN };
+    bool is_collapsed = false;
     sf::RectangleShape m_body;
     sf::Texture m_texture;
     sf::Font m_font;
