@@ -25,7 +25,7 @@ void Application::update() {
 
     if (m_clock.getElapsedTime().asSeconds() >= 1.0f) {
         m_clock.restart().asSeconds();
-        auto* min_cell_p = find_min_entropy(m_cells);
+        auto* min_cell_p = find_min_entropy();
         min_cell_p->m_possible_tiles.pop_back();
         min_cell_p->update();
     }
@@ -49,18 +49,33 @@ void Application::render() {
     m_window.display();
 }
 
-Cell* Application::find_min_entropy(const Application::cells_t& cells) {
-    auto compare_entropy = [](const Cell& a, const Cell& b) {
-        return b.is_collapsed || a.m_possible_tiles.size() < b.m_possible_tiles.size();
-    };
-    Cell* min_cell_p = cells[0][0].get();
+Cell* Application::find_min_entropy() {
+//    auto compare_entropy = [](const Cell& a, const Cell& b) {
+//        return b.is_collapsed || a.m_possible_tiles.size() < b.m_possible_tiles.size();
+//    };
+//    Cell* min_cell_p = m_cells[0][0].get();
+//    for (int row = 0; row < BLOCK_COUNT; row++) {
+//        for (int col = 0; col < BLOCK_COUNT; col++) {
+//            if (compare_entropy(*m_cells[row][col], *min_cell_p))
+//                min_cell_p = m_cells[row][col].get();
+//        }
+//    }
+//    return min_cell_p;
+    m_min_entropy_cells.clear();
+    size_t max_entropy_size = 10000;
     for (int row = 0; row < BLOCK_COUNT; row++) {
         for (int col = 0; col < BLOCK_COUNT; col++) {
-            if (compare_entropy(*cells[row][col], *min_cell_p))
-                min_cell_p = cells[row][col].get();
+            auto entropy_size = m_cells[row][col]->m_possible_tiles.size();
+            if (entropy_size < max_entropy_size)
+                max_entropy_size = entropy_size;
         }
     }
-    return min_cell_p;
+    for (int row = 0; row < BLOCK_COUNT; row++) {
+        for (int col = 0; col < BLOCK_COUNT; col++) {
+            if (m_cells[row][col]->m_possible_tiles.size() == max_entropy_size)
+                m_min_entropy_cells.push_back(m_cells[row][col].get());
+        }
+    }
 }
 
 void Application::create_cells(Application::cells_t& cells) {
