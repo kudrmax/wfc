@@ -3,6 +3,8 @@
 #include "config.h"
 #include <SFML/Graphics.hpp>
 #include "Tile.h"
+#include <random>
+#include "random.h"
 
 
 struct Cell {
@@ -38,6 +40,12 @@ struct Cell {
         window.draw(m_body);
         window.draw(m_text);
     };
+    void specify_cell() {
+        auto one_tile = *select_randomly(m_possible_tiles.begin(), m_possible_tiles.end());
+        m_possible_tiles.clear();
+        m_possible_tiles = { one_tile };
+    };
+public:
     sf::RectangleShape m_body;
     bool is_collapsed = false;
     std::vector<Tile> m_possible_tiles;

@@ -1,4 +1,6 @@
 #include "Application.h"
+#include <iostream>
+#include "random.h"
 
 Application::Application() {
     create_tiles();
@@ -25,9 +27,10 @@ void Application::update() {
 
     if (m_clock.getElapsedTime().asSeconds() >= 1.0f) {
         m_clock.restart().asSeconds();
-        auto* min_cell_p = find_min_entropy();
-        min_cell_p->m_possible_tiles.pop_back();
-        min_cell_p->update();
+        update_min_entropy_cells();
+        Cell* cell_to_specify_p = *select_randomly(m_min_entropy_cells.begin(), m_min_entropy_cells.end());
+        cell_to_specify_p->specify_cell();
+        cell_to_specify_p->update();
     }
 
     for (auto& row: m_cells) {
@@ -48,25 +51,13 @@ void Application::render() {
 
     m_window.display();
 }
-
-Cell* Application::find_min_entropy() {
-//    auto compare_entropy = [](const Cell& a, const Cell& b) {
-//        return b.is_collapsed || a.m_possible_tiles.size() < b.m_possible_tiles.size();
-//    };
-//    Cell* min_cell_p = m_cells[0][0].get();
-//    for (int row = 0; row < BLOCK_COUNT; row++) {
-//        for (int col = 0; col < BLOCK_COUNT; col++) {
-//            if (compare_entropy(*m_cells[row][col], *min_cell_p))
-//                min_cell_p = m_cells[row][col].get();
-//        }
-//    }
-//    return min_cell_p;
+void Application::update_min_entropy_cells() {
     m_min_entropy_cells.clear();
     size_t max_entropy_size = 10000;
     for (int row = 0; row < BLOCK_COUNT; row++) {
         for (int col = 0; col < BLOCK_COUNT; col++) {
             auto entropy_size = m_cells[row][col]->m_possible_tiles.size();
-            if (entropy_size < max_entropy_size)
+            if (entropy_size != 1 && entropy_size < max_entropy_size)
                 max_entropy_size = entropy_size;
         }
     }
@@ -91,9 +82,10 @@ void Application::create_cells(Application::cells_t& cells) {
 }
 
 void Application::create_tiles() {
-    m_tiles.push_back({ "blank.png", { 0, 0, 0, 0 }, 1 });
-    for (size_t i = 0; i < 4; i++)
+    for (size_t i = 0; i < 4; i++) {
         m_tiles.push_back({ "3.png", { 1, 1, 0, 1 }, i });
+    }
+    m_tiles.push_back({ "blank.png", { 0, 0, 0, 0 }, 1 });
 }
 
 

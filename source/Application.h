@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Cell.h"
 #include "Tile.h"
+#include <random>
 
 class Application {
 public:
@@ -9,7 +10,7 @@ public:
     Application();
     void run(); // бесконечный цикл с запущенной игрой
 private:
-    Cell* find_min_entropy();
+    void update_min_entropy_cells();
     void create_cells(cells_t& cells);
     void create_tiles();
     void event_handling(); // обрабатываем события
