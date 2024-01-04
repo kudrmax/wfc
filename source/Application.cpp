@@ -23,10 +23,6 @@ void Application::event_handling() {
 
 void Application::update() {
 
-//    Tile temp = {"3.png", { 1, 1, 0, 1 }};
-//    m_cells[2][2]->m_possible_tiles.clear();
-//    m_cells[2][2]->m_possible_tiles.push_back(temp);
-
     if (m_clock.getElapsedTime().asSeconds() >= 1.0f) {
         m_clock.restart().asSeconds();
         auto* min_cell_p = find_min_entropy(m_cells);
@@ -42,7 +38,7 @@ void Application::update() {
 }
 
 void Application::render() {
-    m_window.clear(sf::Color::Black);
+    m_window.clear();
 
     for (auto& row: m_cells) {
         for (auto& cell: row) {
@@ -77,16 +73,12 @@ void Application::create_cells(Application::cells_t& cells) {
         }
         cells.emplace_back(std::move(row_vec));
     }
-//    for (auto& row: cells)
-//        for (auto& tile: row)
-//            tile->set_texture();
 }
 
 void Application::create_tiles() {
-    m_tiles.push_back({ "blank.png", { 0, 0, 0, 0 }});
-    Tile tile{ "3.png", { 1, 1, 0, 1 }};
-    for (int i = 0; i < 4; i++)
-        m_tiles.push_back(tile.rotate(i));
+    m_tiles.push_back({ "blank.png", { 0, 0, 0, 0 }, 1 });
+    for (size_t i = 0; i < 4; i++)
+        m_tiles.push_back({ "3.png", { 1, 1, 0, 1 }, i });
 }
 
 

@@ -7,18 +7,17 @@
 
 struct Cell {
     Cell() = default;
-    Cell(const sf::Vector2f& pos, const std::vector<Tile>& tiles) {
+    Cell(const sf::Vector2f& pos, const std::vector<Tile>& tiles) : m_possible_tiles(tiles) {
         m_body.setSize({ BLOCK_SIZE, BLOCK_SIZE });
         m_body.setOrigin(m_body.getSize() / 2.0f);
         m_body.setPosition(pos);
-        m_body.setFillColor(sf::Color::Black);
-        m_possible_tiles = tiles;
     }
     void update() {
         update_text();
-        if (m_possible_tiles.size() == 1) {
-//            m_body.setTexture("3.png");
-            m_body.setTexture(m_possible_tiles[0].get_texture());
+        if (!is_collapsed && m_possible_tiles.size() == 1) {
+            m_texture.loadFromFile(m_possible_tiles[0].texture_str);
+            m_body.setTexture(&m_texture);
+            m_body.rotate(m_possible_tiles[0].rotation * 90);
             is_collapsed = true;
         }
     }
