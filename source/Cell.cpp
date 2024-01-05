@@ -68,11 +68,33 @@ void Cell::updateCollapseStatus() {
 }
 
 void Cell::updateTexture() {
+    
+    sf::RenderTexture render_texture;
+    render_texture.create(BLOCK_SIZE, BLOCK_SIZE);
+    size_t count = m_possible_tiles.size();
+    auto side_delta = count == 1 ? 0 : 0.05f * BLOCK_SIZE;
+    auto delta_between = count == 1 ? 0 : 0.1f * BLOCK_SIZE / count;
+    float mini_block_size = (BLOCK_SIZE - side_delta * 2 - (count - 1) * delta_between) / count;
+    auto zero_pos_x = side_delta;
+    for (int i = 0; i < count; i++) {
+        auto& tile = m_possible_tiles[i];
+        const auto& texture_str = tile.texture_str;
+        auto rotation = tile.rotation;
+        sf::RectangleShape shape;
+        shape.setSize({ mini_block_size, mini_block_size });
+        shape.setOrigin(shape.getSize() / 2.0f);
+        auto pos_x = zero_pos_x + (mini_block_size + delta_between) * i + mini_block_size / 2;
+        shape.setPosition(pos_x, BLOCK_SIZE / 2);
+        sf::Texture texture;
+        texture.loadFromFile(texture_str);
+        shape.setTexture(&texture);
+        shape.rotate(rotation * 90);
+        render_texture.draw(shape);
 
-    if (!m_body.getTexture() && m_possible_tiles.size() == 1) {
-        m_texture.loadFromFile(m_possible_tiles[0].texture_str);
+        render_texture.display();
+        sf::Texture temp(render_texture.getTexture());
+        m_texture = temp;
         m_body.setTexture(&m_texture);
-        m_body.rotate(360 - m_possible_tiles[0].rotation * 90);
     }
 
     if (!m_font.loadFromFile("PixelFont.ttf"))

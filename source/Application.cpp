@@ -26,7 +26,7 @@ void Application::eventHandling() {
 
 void Application::update() {
 
-    if (m_clock.getElapsedTime().asSeconds() >= 0.5f) {
+    if (m_clock.getElapsedTime().asSeconds() >= 2.0f) {
         m_clock.restart().asSeconds();
 
         auto& cell_to_collapse = getLowestEntropyCell();
