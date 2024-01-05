@@ -25,4 +25,5 @@ private:
     std::vector<Tile> m_tiles;
     sf::Clock m_clock;
     std::stack<Cell*> m_cells_to_collapse_p_stack;
+    bool temp_flag = true;
 };

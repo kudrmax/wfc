@@ -10,7 +10,7 @@
 struct Cell {
 public:
     enum DIR {
-        U = 0, R, L, D
+        U = 0, R, D, L
     };
 public:
     Cell() = default;
@@ -19,7 +19,7 @@ public:
     void updateText();
     void drawInto(sf::RenderWindow& window) const;
     void collapseCell();
-    bool reduceEntropyCell(std::vector<Tile> neighbour_possible_tiles, Cell::DIR dir_from);
+    bool reduceEntropyCell(std::vector<size_t> possible_ids_on_dir, Cell::DIR dir_from);
 public:
     std::vector<Tile> m_possible_tiles;
     bool is_collapsed = false;
