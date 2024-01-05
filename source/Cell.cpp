@@ -7,6 +7,7 @@ Cell::Cell(const sf::Vector2f& pos, const std::vector<Tile>& tiles) : m_possible
 }
 
 void Cell::markCollapsed() {
+
     updateText();
 
     if (!is_collapsed && m_possible_tiles.size() == 1) {

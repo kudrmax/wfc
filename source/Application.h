@@ -5,22 +5,22 @@
 #include <stack>
 
 class Application {
-    using cells_t = std::vector<std::vector<std::unique_ptr<Cell>>>;
 public:
     Application();
     void run(); // бесконечный цикл с запущенной игрой
 private:
-    std::vector<Cell*> getLowestEntropyTiles();
     void eventHandling(); // обрабатываем события
     void update(); // меняем состояние объектов
     void render(); // отрисовываем новое состояние
+    std::vector<Cell*> getLowestEntropyCells();
+    void waveFunctionCollapse();
 private:
     void fillCells();
     void fillTiles();
 private:
     sf::RenderWindow m_window{ sf::VideoMode(W, H), "WFC"};
-    cells_t m_cells;
+    std::vector<std::vector<Cell>> m_cells;
     std::vector<Tile> m_tiles;
     sf::Clock m_clock;
-    std::stack<Tile*> st;
+    std::stack<Cell*> m_cells_to_collapse_stack;
 };
