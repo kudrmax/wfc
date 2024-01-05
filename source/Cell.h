@@ -15,12 +15,10 @@ public:
 public:
     Cell() = default;
     Cell(const sf::Vector2f& pos, const std::vector<Tile>& tiles, std::vector<DIR>&& possible_directions);
-    void markCollapsed();
-    void updateText();
     void drawInto(sf::RenderWindow& window) const;
     void collapseCell();
-    bool reduceEntropyCell(std::vector<size_t> possible_edges_on_dir, Cell::DIR dir_from);
     std::vector<size_t> getPossibleEdgesOnDirection(Cell::DIR direction);
+    bool reduceEntropyCell(std::vector<size_t> possible_edges_on_dir, Cell::DIR dir_from);
 public:
     std::vector<Tile> m_possible_tiles;
     bool is_collapsed = false;
@@ -29,4 +27,6 @@ public:
     sf::Texture m_texture;
     sf::Font m_font;
     sf::Text m_text;
+    void updateCollapseStatus();
+    void updateTexture();
 };

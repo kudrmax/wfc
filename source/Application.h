@@ -16,6 +16,7 @@ private:
     void fillCells();
     void fillTiles();
     std::vector<Cell*> getLowestEntropyCells();
+    Cell& getLowestEntropyCell();
     std::pair<size_t, size_t> getCellsIndexesByReference(Cell&);
     Cell* getNeighbour(Cell& cell_ref, Cell::DIR dir);
     void waveFunctionCollapse(Cell& cell);
@@ -24,5 +25,4 @@ private:
     std::vector<std::vector<Cell>> m_cells;
     std::vector<Tile> m_tiles;
     sf::Clock m_clock;
-    bool temp_flag = true;
 };

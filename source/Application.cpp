@@ -28,45 +28,15 @@ void Application::update() {
 
     if (m_clock.getElapsedTime().asSeconds() >= 0.5f) {
         m_clock.restart().asSeconds();
-        std::vector<Cell*> lowest_entropy_cells_vec = getLowestEntropyCells();
-        Cell& cell_to_collapse_p = **select_randomly(lowest_entropy_cells_vec.begin(), lowest_entropy_cells_vec.end());
-        cell_to_collapse_p.collapseCell();
-        cell_to_collapse_p.markCollapsed();
 
-//        if (temp_flag) {
-//            bool was_reduced = m_cells[2][2].reduceEntropyCell({ 1 }, Cell::DIR::U);
-//            std::cout << was_reduced << std::endl;
-//            temp_flag = false;
-//        }
-
-        for (auto& row: m_cells) {
-            for (auto& cell: row) {
-                cell.markCollapsed();
-            }
-        }
-        waveFunctionCollapse(cell_to_collapse_p);
-
-        for (auto& row: m_cells) {
-            for (auto& cell: row) {
-                cell.markCollapsed();
-            }
-        }
-
-
+        auto& cell_to_collapse = getLowestEntropyCell();
+        cell_to_collapse.collapseCell();
+        waveFunctionCollapse(cell_to_collapse);
     }
 
-
-
-
-//    for (int row = 0; row < BLOCK_COUNT; row++) {
-//        for (int col = 0; col < BLOCK_COUNT; col++) {
-//            auto& cell = m_cells[row][col];
-//            if (!cell.is_collapsed) {
-//                // пофиксить ее возможные варианты
-//
-//            }
-//        }
-//    }
+    for (auto& row: m_cells)
+        for (auto& cell: row)
+            cell.updateTexture();
 }
 
 void Application::render() {
@@ -111,21 +81,27 @@ void Application::fillTiles() {
 
 std::vector<Cell*> Application::getLowestEntropyCells() {
     std::vector<Cell*> lowest_entropy_tiles;
-    size_t max_entropy_size = 10000;
+    size_t lowest_entropy_size = 10000;
     for (int row = 0; row < BLOCK_COUNT; row++) {
         for (int col = 0; col < BLOCK_COUNT; col++) {
             auto entropy_size = m_cells[row][col].m_possible_tiles.size();
-            if (entropy_size != 1 && entropy_size < max_entropy_size)
-                max_entropy_size = entropy_size;
+            if (entropy_size != 1 && entropy_size < lowest_entropy_size)
+                lowest_entropy_size = entropy_size;
         }
     }
     for (int row = 0; row < BLOCK_COUNT; row++) {
         for (int col = 0; col < BLOCK_COUNT; col++) {
-            if (m_cells[row][col].m_possible_tiles.size() == max_entropy_size)
+            if (m_cells[row][col].m_possible_tiles.size() == lowest_entropy_size)
                 lowest_entropy_tiles.push_back(&m_cells[row][col]);
         }
     }
     return lowest_entropy_tiles;
+}
+
+Cell& Application::getLowestEntropyCell() {
+    std::vector<Cell*> lowest_entropy_cells_vec = getLowestEntropyCells();
+    Cell& cell_to_collapse = **select_randomly(lowest_entropy_cells_vec.begin(), lowest_entropy_cells_vec.end());
+    return cell_to_collapse;
 }
 
 
@@ -172,5 +148,7 @@ void Application::waveFunctionCollapse(Cell& cell_ref) {
         }
     }
 }
+
+
 
 
