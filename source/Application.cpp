@@ -74,14 +74,31 @@ void Application::fillCells() {
 }
 
 void Application::fillTiles() {
+    // demo
 //    m_tiles.push_back({ "demo/blank.png", { 0, 0, 0, 0 }, 1 });
 //    for (size_t i = 0; i < 4; i++)
 //        m_tiles.push_back({ "demo/3.png", { 1, 1, 0, 1 }, i });
 
-    m_tiles.push_back({ "simple/0000.png", { 0, 0, 0, 0 }, 0 });
-    m_tiles.push_back({ "simple/1111.png", { 1, 1, 1, 1 }, 0 });
-    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "simple/1101.png", { 1, 1, 0, 1 }, i });
-    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "simple/0101.png", { 0, 1, 0, 1 }, i });
+    // simple
+//    m_tiles.push_back({ "simple/0000.png", { 0, 0, 0, 0 }, 0 });
+//    m_tiles.push_back({ "simple/1111.png", { 1, 1, 1, 1 }, 0 });
+//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "simple/1101.png", { 1, 1, 0, 1 }, i });
+//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "simple/0101.png", { 0, 1, 0, 1 }, i });
+
+    // complicated
+    m_tiles.push_back({ "complicated/0.png", { 0, 0, 0, 0 }, 0 });
+    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/1.png", { 0, 1, 0, 1 }, i });
+    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "complicated/2.png", { 1, 1, 0, 1 }, i });
+    m_tiles.push_back({ "complicated/3.png", { 1, 1, 1, 1 }, 0 });
+    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/4.png", { 0, 2, 0, 2 }, i });
+    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "complicated/5.png", { 2, 2, 0, 2 }, i });
+    m_tiles.push_back({ "complicated/6.png", { 2, 2, 2, 2 }, 0 });
+    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/7.png", { 1, 2, 1, 2 }, i });
+    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/8.png", { 1, 2, 1, 2 }, i });
+    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "complicated/9.png", { 2, 0, 1, 0 }, i });
+    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "complicated/9.png", { 2, 2, 1, 1 }, i });
+
+
 }
 
 std::vector<Cell*> Application::getLowestEntropyCells() {
@@ -89,10 +106,8 @@ std::vector<Cell*> Application::getLowestEntropyCells() {
     size_t lowest_entropy_size = 10000;
     for (int row = 0; row < BLOCK_COUNT_H; row++) {
         for (int col = 0; col < BLOCK_COUNT_W; col++) {
-            if (m_cells[row][col].is_collapsed)
-                continue;
             auto entropy_size = m_cells[row][col].m_possible_tiles.size();
-            if (entropy_size < lowest_entropy_size)
+            if (entropy_size != 1 && entropy_size < lowest_entropy_size)
                 lowest_entropy_size = entropy_size;
         }
     }

@@ -29,7 +29,6 @@ public:
     std::vector<DIR> m_possible_directions;
     sf::RectangleShape m_body;
     sf::Texture m_texture;
-//    sf::RenderTexture m_render_texture;
     sf::Font m_font;
     sf::Text m_text;
 };
