@@ -23,6 +23,8 @@ public:
     void updateTexture();
     std::vector<size_t> getPossibleEdgesOnDirection(Cell::DIR direction);
     bool reduceEntropyCell(std::vector<size_t> possible_edges_on_dir, Cell::DIR dir_from);
+private:
+    void fillRowCount();
 public:
     std::vector<Tile> m_possible_tiles;
     bool is_collapsed = false;
@@ -31,4 +33,5 @@ public:
     sf::Texture m_texture;
     sf::Font m_font;
     sf::Text m_text;
+    std::unordered_map<int, int> m_col_count;
 };

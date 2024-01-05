@@ -6,6 +6,7 @@ Cell::Cell(const sf::Vector2f& pos, const std::vector<Tile>& tiles, std::vector<
     m_body.setSize({ BLOCK_SIZE, BLOCK_SIZE });
     m_body.setOrigin(m_body.getSize() / 2.0f);
     m_body.setPosition(pos);
+    fillRowCount();
 }
 
 
@@ -71,20 +72,35 @@ void Cell::updateTexture() {
 
     sf::RenderTexture render_texture;
     render_texture.create(BLOCK_SIZE, BLOCK_SIZE);
-    size_t count = m_possible_tiles.size();
-    auto side_delta = count == 1 ? 0 : 0.05f * BLOCK_SIZE;
-    auto delta_between = count == 1 ? 0 : 0.1f * BLOCK_SIZE / count;
-    float mini_block_size = (BLOCK_SIZE - side_delta * 2 - (count - 1) * delta_between) / count;
+
+    size_t count_total = m_possible_tiles.size();
+    size_t count_in_row = m_col_count[count_total];
+
+    auto side_delta = count_total == 1 ? 0 : 0.05f * BLOCK_SIZE;
+    auto delta_between = count_total == 1 ? 0 : 0.15f * BLOCK_SIZE / count_in_row;
+
+    float mini_block_size = (BLOCK_SIZE - side_delta * 2 - (count_in_row - 1) * delta_between) / count_in_row;
+
     auto zero_pos_x = side_delta;
-    for (int i = 0; i < count; i++) {
+    auto zero_pos_y = side_delta;
+
+    for (int i = 0, y = 0, x = 0; i < count_total; i++, x++) {
+
+        if (x > count_in_row - 1) {
+            x = x % count_in_row;
+            y++;
+        }
+
         auto& tile = m_possible_tiles[i];
         const auto& texture_str = tile.texture_str;
         auto rotation = tile.rotation;
         sf::RectangleShape shape;
         shape.setSize({ mini_block_size, mini_block_size });
         shape.setOrigin(shape.getSize() / 2.0f);
-        auto pos_x = zero_pos_x + (mini_block_size + delta_between) * i + mini_block_size / 2;
-        shape.setPosition(pos_x, BLOCK_SIZE / 2);
+
+        auto pos_x = zero_pos_x + (mini_block_size + delta_between) * x + mini_block_size / 2;
+        auto pos_y = zero_pos_y + (mini_block_size + delta_between) * y + mini_block_size / 2;
+        shape.setPosition(pos_x, pos_y);
         sf::Texture texture;
         texture.loadFromFile(texture_str);
         shape.setTexture(&texture);
@@ -113,4 +129,15 @@ void Cell::updateTexture() {
 //    m_text.setFillColor(sf::Color::White);
 //    m_text.setOutlineColor(sf::Color::Black);
 //    m_text.setOutlineThickness(4);
+}
+
+void Cell::fillRowCount() {
+    for (int i = 1; i < MAX_TILE_COUNT; i++) {
+        for (int num = 1; num < MAX_TILE_COUNT; num++) {
+            if (i <= num * num) {
+                m_col_count[i] = num;
+                break;
+            }
+        }
+    }
 }
