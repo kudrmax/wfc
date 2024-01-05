@@ -26,7 +26,7 @@ void Application::eventHandling() {
 
 void Application::update() {
 
-    if (m_clock.getElapsedTime().asSeconds() >= 1.0f) {
+    if (m_clock.getElapsedTime().asSeconds() >= 3.0f) {
         m_clock.restart().asSeconds();
         std::vector<Cell*> lowest_entropy_cells_vec = getLowestEntropyCells();
         Cell* cell_to_collapse_p = *select_randomly(lowest_entropy_cells_vec.begin(), lowest_entropy_cells_vec.end());

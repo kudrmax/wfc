@@ -12,13 +12,13 @@ private:
     void eventHandling(); // обрабатываем события
     void update(); // меняем состояние объектов
     void render(); // отрисовываем новое состояние
-    std::vector<Cell*> getLowestEntropyCells();
-    void waveFunctionCollapse();
 private:
     void fillCells();
     void fillTiles();
+    std::vector<Cell*> getLowestEntropyCells();
     std::pair<size_t, size_t> getCellsIndexesByPointer(Cell*);
     Cell* getNeighbour(Cell* cell_p, Cell::DIR);
+    void waveFunctionCollapse();
 private:
     sf::RenderWindow m_window{ sf::VideoMode(W, H), "WFC"};
     std::vector<std::vector<Cell>> m_cells;

@@ -1,4 +1,5 @@
 #include "Cell.h"
+#include <algorithm>
 
 Cell::Cell(const sf::Vector2f& pos, const std::vector<Tile>& tiles, std::vector<DIR>&& possible_directions)
         : m_possible_tiles(tiles), m_possible_directions(possible_directions) {
@@ -14,7 +15,7 @@ void Cell::markCollapsed() {
     if (!is_collapsed && m_possible_tiles.size() == 1) {
         m_texture.loadFromFile(m_possible_tiles[0].texture_str);
         m_body.setTexture(&m_texture);
-        m_body.rotate(m_possible_tiles[0].rotation * 90);
+        m_body.rotate(360 - m_possible_tiles[0].rotation * 90);
         is_collapsed = true;
     }
 }
@@ -23,8 +24,14 @@ void Cell::updateText() {
     if (!m_font.loadFromFile("PixelFont.ttf"))
         throw std::runtime_error("No such file in directory");
     m_text.setFont(m_font);
-    m_text.setString(std::to_string(is_collapsed) + "\n" + std::to_string(m_possible_tiles.size()));
-    m_text.setCharacterSize(60);
+    std::string tile_str;
+    for (auto& tile: m_possible_tiles) {
+        tile_str += tile.print_sfml() + " ";
+    }
+    m_text.setString(std::to_string(is_collapsed) + "\n" +
+                     std::to_string(m_possible_tiles.size()) + "\n" +
+                     tile_str);
+    m_text.setCharacterSize(50);
     auto textRect = m_text.getLocalBounds();
     m_text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
     m_text.setPosition(m_body.getPosition());
