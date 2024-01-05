@@ -1,5 +1,6 @@
 #include "Application.h"
 #include <iostream>
+#include <algorithm>
 #include "random.h"
 
 Application::Application() {
@@ -27,16 +28,16 @@ void Application::update() {
 
     if (m_clock.getElapsedTime().asSeconds() >= 1.0f) {
         m_clock.restart().asSeconds();
-//        std::vector<Cell*> lowest_entropy_cells_vec = getLowestEntropyCells();
-//        Cell* cell_to_collapse_p = *select_randomly(lowest_entropy_cells_vec.begin(), lowest_entropy_cells_vec.end());
-//        cell_to_collapse_p->collapseCell();
-//        cell_to_collapse_p->markCollapsed();
+        std::vector<Cell*> lowest_entropy_cells_vec = getLowestEntropyCells();
+        Cell* cell_to_collapse_p = *select_randomly(lowest_entropy_cells_vec.begin(), lowest_entropy_cells_vec.end());
+        cell_to_collapse_p->collapseCell();
+        cell_to_collapse_p->markCollapsed();
 
-        if (temp_flag) {
-            bool was_reduced = m_cells[2][2].reduceEntropyCell({ 1 }, Cell::DIR::U);
-            std::cout << was_reduced << std::endl;
-            temp_flag = false;
-        }
+//        if (temp_flag) {
+//            bool was_reduced = m_cells[2][2].reduceEntropyCell({ 1 }, Cell::DIR::U);
+//            std::cout << was_reduced << std::endl;
+//            temp_flag = false;
+//        }
 
         for (auto& row: m_cells) {
             for (auto& cell: row) {
@@ -44,22 +45,35 @@ void Application::update() {
             }
         }
 
-//        m_cells_to_collapse_p_stack.push(cell_to_collapse_p);
-//
-//        while (!m_cells_to_collapse_p_stack.empty()) {
-//            auto* cell_p = m_cells_to_collapse_p_stack.top();
-//            m_cells_to_collapse_p_stack.pop();
-//            auto possible_tiles_p_vec = cell_p->m_possible_tiles;
-//            auto possible_directions = cell_p->m_possible_directions;
-//            for (auto dir: possible_directions) {
-//                auto neighbour_cell_p = getNeighbour(cell_p, dir);
-//                if (!neighbour_cell_p->is_collapsed) {
-////                    bool was_reduced = neighbour_cell_p->reduceEntropyCell(possible_tiles_p_vec, dir);
-////                    if (was_reduced)
-////                        m_cells_to_collapse_p_stack.push(neighbour_cell_p);
-//                }
-//            }
-//        }
+        m_cells_to_collapse_p_stack.push(cell_to_collapse_p);
+
+        while (!m_cells_to_collapse_p_stack.empty()) {
+            auto* cell_p = m_cells_to_collapse_p_stack.top();
+            m_cells_to_collapse_p_stack.pop();
+            auto possible_tiles_vec = cell_p->m_possible_tiles;
+            auto possible_directions = cell_p->m_possible_directions;
+            for (auto dir: possible_directions) {
+                auto neighbour_cell_p = getNeighbour(cell_p, dir);
+                std::vector<size_t> possible_ids;
+                for (auto& possible_tile_p: possible_tiles_vec) {
+                    auto id = possible_tile_p.edges[dir];
+                    if (std::find(possible_ids.begin(), possible_ids.end(), id) == possible_ids.end())
+                        possible_ids.push_back(id);
+                }
+                std::sort(possible_ids.begin(), possible_ids.end());
+                if (!neighbour_cell_p->is_collapsed) {
+                    bool was_reduced = neighbour_cell_p->reduceEntropyCell(possible_ids, dir);
+                    if (was_reduced)
+                        m_cells_to_collapse_p_stack.push(neighbour_cell_p);
+                }
+            }
+        }
+
+        for (auto& row: m_cells) {
+            for (auto& cell: row) {
+                cell.markCollapsed();
+            }
+        }
 
 
     }

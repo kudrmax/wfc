@@ -68,7 +68,6 @@ bool Cell::reduceEntropyCell(std::vector<size_t> possible_ids_on_dir, Cell::DIR 
     }
     std::cout << "dir_to = " << dir_to << std::endl;
     std::cout << "dir_from = " << dir_from << std::endl;
-    std::cout << "Cell::DIR::D = " << Cell::DIR::D << std::endl;
 
     bool was_reduced = false;
 
