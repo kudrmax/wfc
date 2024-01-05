@@ -26,8 +26,9 @@ void Application::eventHandling() {
 
 void Application::update() {
 
-    if (m_clock.getElapsedTime().asSeconds() >= 2.0f) {
-        m_clock.restart().asSeconds();
+//    if (m_clock.getElapsedTime().asSeconds() >= 2.0f) {
+//        m_clock.restart().asSeconds();
+    if (true) {
 
         auto& cell_to_collapse = getLowestEntropyCell();
         cell_to_collapse.collapseCell();
@@ -73,9 +74,14 @@ void Application::fillCells() {
 }
 
 void Application::fillTiles() {
-    m_tiles.push_back({ "blank.png", { 0, 0, 0, 0 }, 1 });
-    for (size_t i = 0; i < 4; i++)
-        m_tiles.push_back({ "3.png", { 1, 1, 0, 1 }, i });
+//    m_tiles.push_back({ "demo/blank.png", { 0, 0, 0, 0 }, 1 });
+//    for (size_t i = 0; i < 4; i++)
+//        m_tiles.push_back({ "demo/3.png", { 1, 1, 0, 1 }, i });
+
+    m_tiles.push_back({ "simple/0000.png", { 0, 0, 0, 0 }, 0 });
+    m_tiles.push_back({ "simple/1111.png", { 1, 1, 1, 1 }, 0 });
+    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "simple/1101.png", { 1, 1, 0, 1 }, i });
+    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "simple/0101.png", { 0, 1, 0 ,1 }, i });
 }
 
 std::vector<Cell*> Application::getLowestEntropyCells() {
