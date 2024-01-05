@@ -3,19 +3,19 @@
 #include "random.h"
 
 Application::Application() {
-    create_tiles();
-    create_cells(m_cells);
+    fillTiles();
+    fillCells();
 }
 void Application::run() {
 
     while (m_window.isOpen()) {
-        event_handling();
+        eventHandling();
         update();
         render();
     }
 }
 
-void Application::event_handling() {
+void Application::eventHandling() {
     sf::Event event;
     while (m_window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
@@ -27,15 +27,25 @@ void Application::update() {
 
     if (m_clock.getElapsedTime().asSeconds() >= 1.0f) {
         m_clock.restart().asSeconds();
-        update_min_entropy_cells();
-        Cell* cell_to_specify_p = *select_randomly(m_min_entropy_cells.begin(), m_min_entropy_cells.end());
-        cell_to_specify_p->specify_cell();
-        cell_to_specify_p->update();
+        std::vector<Cell*> lowest_entropy_tiles_vec = getLowestEntropyTiles();
+        Cell* cell_to_collapse_p = *select_randomly(lowest_entropy_tiles_vec.begin(), lowest_entropy_tiles_vec.end());
+        cell_to_collapse_p->collapseCell();
+        cell_to_collapse_p->markCollapsed();
     }
 
     for (auto& row: m_cells) {
         for (auto& cell: row) {
-            cell->update();
+            cell->markCollapsed();
+        }
+    }
+
+    for (int row = 0; row < BLOCK_COUNT; row++) {
+        for (int col = 0; col < BLOCK_COUNT; col++) {
+            auto cell = m_cells[row][col].get();
+            if (!cell->is_collapsed) {
+                // пофиксить ее возможные варианты
+
+            }
         }
     }
 }
@@ -45,14 +55,15 @@ void Application::render() {
 
     for (auto& row: m_cells) {
         for (auto& cell: row) {
-            cell->draw_into(m_window);
+            cell->drawInto(m_window);
         }
     }
 
     m_window.display();
 }
-void Application::update_min_entropy_cells() {
-    m_min_entropy_cells.clear();
+
+std::vector<Cell*> Application::getLowestEntropyTiles() {
+    std::vector<Cell*> lowest_entropy_tiles;
     size_t max_entropy_size = 10000;
     for (int row = 0; row < BLOCK_COUNT; row++) {
         for (int col = 0; col < BLOCK_COUNT; col++) {
@@ -64,12 +75,13 @@ void Application::update_min_entropy_cells() {
     for (int row = 0; row < BLOCK_COUNT; row++) {
         for (int col = 0; col < BLOCK_COUNT; col++) {
             if (m_cells[row][col]->m_possible_tiles.size() == max_entropy_size)
-                m_min_entropy_cells.push_back(m_cells[row][col].get());
+                lowest_entropy_tiles.push_back(m_cells[row][col].get());
         }
     }
+    return lowest_entropy_tiles;
 }
 
-void Application::create_cells(Application::cells_t& cells) {
+void Application::fillCells() {
     for (int row = 0; row < BLOCK_COUNT; row++) {
         std::vector<std::unique_ptr<Cell>> row_vec;
         auto pos_zero = sf::Vector2f(BLOCK_SIZE / 2, BLOCK_SIZE / 2);
@@ -77,11 +89,11 @@ void Application::create_cells(Application::cells_t& cells) {
             auto pos = pos_zero + sf::Vector2f(col * BLOCK_SIZE, row * BLOCK_SIZE);
             row_vec.emplace_back(std::make_unique<Cell>(pos, m_tiles));
         }
-        cells.emplace_back(std::move(row_vec));
+        m_cells.emplace_back(std::move(row_vec));
     }
 }
 
-void Application::create_tiles() {
+void Application::fillTiles() {
     for (size_t i = 0; i < 4; i++) {
         m_tiles.push_back({ "3.png", { 1, 1, 0, 1 }, i });
     }
