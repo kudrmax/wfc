@@ -21,6 +21,17 @@ void Application::eventHandling() {
     while (m_window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             m_window.close();
+        if (event.type == sf::Event::KeyPressed ) {
+            if (event.key.code == sf::Keyboard::Space) {
+                sf::Vector2i pixel_pos = sf::Mouse::getPosition(m_window);
+                sf::Vector2f pos = m_window.mapPixelToCoords(pixel_pos);
+                int col = BLOCK_COUNT_W * pos.x / W;
+                int row = BLOCK_COUNT_H * pos.y / H;
+                std::cout << row << " " << col << "\n";
+                m_cells[row][col].collapseCell();
+                waveFunctionCollapse(m_cells[row][col]);
+            }
+        }
     }
 }
 
@@ -33,12 +44,11 @@ void Application::update() {
         if (cell_to_collapse) {
             cell_to_collapse->collapseCell();
             waveFunctionCollapse(*cell_to_collapse);
-
-            for (auto& row: m_cells)
-                for (auto& cell: row)
-                    cell.updateTexture();
         }
     }
+    for (auto& row: m_cells)
+        for (auto& cell: row)
+            cell.updateTexture();
 }
 
 void Application::render() {
@@ -81,23 +91,23 @@ void Application::fillTiles() {
 //        m_tiles.push_back({ "demo/3.png", { 1, 1, 0, 1 }, i });
 
     // simple
-    m_tiles.push_back({ "simple/0000.png", { 0, 0, 0, 0 }, 0 });
-    m_tiles.push_back({ "simple/1111.png", { 1, 1, 1, 1 }, 0 });
-    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "simple/1101.png", { 1, 1, 0, 1 }, i });
-    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "simple/0101.png", { 0, 1, 0, 1 }, i });
+//    m_tiles.push_back({ "simple/0000.png", { 0, 0, 0, 0 }, 0 });
+//    m_tiles.push_back({ "simple/1111.png", { 1, 1, 1, 1 }, 0 });
+//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "simple/1101.png", { 1, 1, 0, 1 }, i });
+//    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "simple/0101.png", { 0, 1, 0, 1 }, i });
 
     // complicated
-//    m_tiles.push_back({ "complicated/0.png", { 0, 0, 0, 0 }, 0 });
-//    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/1.png", { 0, 1, 0, 1 }, i });
-//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "complicated/2.png", { 1, 1, 0, 1 }, i });
-//    m_tiles.push_back({ "complicated/3.png", { 1, 1, 1, 1 }, 0 });
-//    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/4.png", { 0, 2, 0, 2 }, i });
-//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "complicated/5.png", { 2, 2, 0, 2 }, i });
-//    m_tiles.push_back({ "complicated/6.png", { 2, 2, 2, 2 }, 0 });
-//    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/7.png", { 1, 2, 1, 2 }, i });
-//    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/8.png", { 1, 2, 1, 2 }, i });
+    m_tiles.push_back({ "complicated/0.png", { 0, 0, 0, 0 }, 0 });
+    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/1.png", { 0, 1, 0, 1 }, i });
+    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "complicated/2.png", { 1, 1, 0, 1 }, i });
+    m_tiles.push_back({ "complicated/3.png", { 1, 1, 1, 1 }, 0 });
+    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/4.png", { 0, 2, 0, 2 }, i });
+    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "complicated/5.png", { 2, 2, 0, 2 }, i });
+    m_tiles.push_back({ "complicated/6.png", { 2, 2, 2, 2 }, 0 });
+    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/7.png", { 1, 2, 1, 2 }, i });
+    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/8.png", { 1, 2, 1, 2 }, i });
 //    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "complicated/9.png", { 2, 0, 1, 0 }, i });
-//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "complicated/9.png", { 2, 2, 1, 1 }, i });
+//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "complicated/10.png", { 2, 2, 1, 1 }, i });
 }
 
 std::vector<Cell*> Application::getLowestEntropyCells() {
