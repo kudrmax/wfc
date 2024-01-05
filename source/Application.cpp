@@ -28,16 +28,16 @@ void Application::update() {
 
 //    if (m_clock.getElapsedTime().asSeconds() >= 2.0f) {
 //        m_clock.restart().asSeconds();
-    if (true) {
 
-        auto& cell_to_collapse = getLowestEntropyCell();
-        cell_to_collapse.collapseCell();
-        waveFunctionCollapse(cell_to_collapse);
+    auto* cell_to_collapse = getLowestEntropyCell();
+    if (cell_to_collapse) {
+        cell_to_collapse->collapseCell();
+        waveFunctionCollapse(*cell_to_collapse);
+
+        for (auto& row: m_cells)
+            for (auto& cell: row)
+                cell.updateTexture();
     }
-
-    for (auto& row: m_cells)
-        for (auto& cell: row)
-            cell.updateTexture();
 }
 
 void Application::render() {
@@ -81,7 +81,7 @@ void Application::fillTiles() {
     m_tiles.push_back({ "simple/0000.png", { 0, 0, 0, 0 }, 0 });
     m_tiles.push_back({ "simple/1111.png", { 1, 1, 1, 1 }, 0 });
     for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "simple/1101.png", { 1, 1, 0, 1 }, i });
-    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "simple/0101.png", { 0, 1, 0 ,1 }, i });
+    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "simple/0101.png", { 0, 1, 0, 1 }, i });
 }
 
 std::vector<Cell*> Application::getLowestEntropyCells() {
@@ -89,8 +89,10 @@ std::vector<Cell*> Application::getLowestEntropyCells() {
     size_t lowest_entropy_size = 10000;
     for (int row = 0; row < BLOCK_COUNT_H; row++) {
         for (int col = 0; col < BLOCK_COUNT_W; col++) {
+            if (m_cells[row][col].is_collapsed)
+                continue;
             auto entropy_size = m_cells[row][col].m_possible_tiles.size();
-            if (entropy_size != 1 && entropy_size < lowest_entropy_size)
+            if (entropy_size < lowest_entropy_size)
                 lowest_entropy_size = entropy_size;
         }
     }
@@ -103,9 +105,11 @@ std::vector<Cell*> Application::getLowestEntropyCells() {
     return lowest_entropy_tiles;
 }
 
-Cell& Application::getLowestEntropyCell() {
+Cell* Application::getLowestEntropyCell() {
     std::vector<Cell*> lowest_entropy_cells_vec = getLowestEntropyCells();
-    Cell& cell_to_collapse = **select_randomly(lowest_entropy_cells_vec.begin(), lowest_entropy_cells_vec.end());
+    if (lowest_entropy_cells_vec.empty())
+        return nullptr;
+    Cell* cell_to_collapse = *select_randomly(lowest_entropy_cells_vec.begin(), lowest_entropy_cells_vec.end());
     return cell_to_collapse;
 }
 

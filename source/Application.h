@@ -16,7 +16,7 @@ private:
     void fillCells();
     void fillTiles();
     std::vector<Cell*> getLowestEntropyCells();
-    Cell& getLowestEntropyCell();
+    Cell* getLowestEntropyCell();
     std::pair<size_t, size_t> getCellsIndexesByReference(Cell&);
     Cell* getNeighbour(Cell& cell_ref, Cell::DIR dir);
     void waveFunctionCollapse(Cell& cell);
