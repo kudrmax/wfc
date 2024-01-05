@@ -26,12 +26,12 @@ void Application::eventHandling() {
 
 void Application::update() {
 
-    if (m_clock.getElapsedTime().asSeconds() >= 3.0f) {
+    if (m_clock.getElapsedTime().asSeconds() >= 0.5f) {
         m_clock.restart().asSeconds();
         std::vector<Cell*> lowest_entropy_cells_vec = getLowestEntropyCells();
-        Cell* cell_to_collapse_p = *select_randomly(lowest_entropy_cells_vec.begin(), lowest_entropy_cells_vec.end());
-        cell_to_collapse_p->collapseCell();
-        cell_to_collapse_p->markCollapsed();
+        Cell& cell_to_collapse_p = **select_randomly(lowest_entropy_cells_vec.begin(), lowest_entropy_cells_vec.end());
+        cell_to_collapse_p.collapseCell();
+        cell_to_collapse_p.markCollapsed();
 
 //        if (temp_flag) {
 //            bool was_reduced = m_cells[2][2].reduceEntropyCell({ 1 }, Cell::DIR::U);
@@ -44,30 +44,7 @@ void Application::update() {
                 cell.markCollapsed();
             }
         }
-
-        m_cells_to_collapse_p_stack.push(cell_to_collapse_p);
-
-        while (!m_cells_to_collapse_p_stack.empty()) {
-            auto* cell_p = m_cells_to_collapse_p_stack.top();
-            m_cells_to_collapse_p_stack.pop();
-            auto possible_tiles_vec = cell_p->m_possible_tiles;
-            auto possible_directions = cell_p->m_possible_directions;
-            for (auto dir: possible_directions) {
-                auto neighbour_cell_p = getNeighbour(cell_p, dir);
-                std::vector<size_t> possible_ids;
-                for (auto& possible_tile_p: possible_tiles_vec) {
-                    auto id = possible_tile_p.edges[dir];
-                    if (std::find(possible_ids.begin(), possible_ids.end(), id) == possible_ids.end())
-                        possible_ids.push_back(id);
-                }
-                std::sort(possible_ids.begin(), possible_ids.end());
-                if (!neighbour_cell_p->is_collapsed) {
-                    bool was_reduced = neighbour_cell_p->reduceEntropyCell(possible_ids, dir);
-                    if (was_reduced)
-                        m_cells_to_collapse_p_stack.push(neighbour_cell_p);
-                }
-            }
-        }
+        waveFunctionCollapse(cell_to_collapse_p);
 
         for (auto& row: m_cells) {
             for (auto& cell: row) {
@@ -78,7 +55,6 @@ void Application::update() {
 
     }
 
-//    waveFunctionCollapse();
 
 
 
@@ -152,22 +128,19 @@ std::vector<Cell*> Application::getLowestEntropyCells() {
     return lowest_entropy_tiles;
 }
 
-void Application::waveFunctionCollapse() {
 
-}
-
-std::pair<size_t, size_t> Application::getCellsIndexesByPointer(Cell* cell_p) {
+std::pair<size_t, size_t> Application::getCellsIndexesByReference(Cell& cell_ref) {
     for (int row = 0; row < BLOCK_COUNT; row++) {
         for (int col = 0; col < BLOCK_COUNT; col++) {
-            if (&m_cells[row][col] == cell_p)
+            if (&m_cells[row][col] == &cell_ref)
                 return { row, col };
         }
     }
     return { -1, -1 };
 }
 
-Cell* Application::getNeighbour(Cell* cell_p, Cell::DIR dir) {
-    auto [row, col] = getCellsIndexesByPointer(cell_p);
+Cell* Application::getNeighbour(Cell& cell_ref, Cell::DIR dir) {
+    auto [row, col] = getCellsIndexesByReference(cell_ref);
     if (row == -1 || col == -1)
         return nullptr;
     switch (dir) {
@@ -181,6 +154,23 @@ Cell* Application::getNeighbour(Cell* cell_p, Cell::DIR dir) {
             return &m_cells[row + 1][col];
     }
     return nullptr;
+}
+void Application::waveFunctionCollapse(Cell& cell_ref) {
+    std::stack<Cell*> cells_to_collapse_p_stack;
+    cells_to_collapse_p_stack.push(&cell_ref);
+    while (!cells_to_collapse_p_stack.empty()) {
+        auto& cell = *cells_to_collapse_p_stack.top(); // взяли верхний элемент
+        cells_to_collapse_p_stack.pop(); // убрали его из стека (т.е. считаем его collapsed)
+        for (const auto& possible_direction: cell.m_possible_directions) {
+            auto& neighbour_cell = *getNeighbour(cell, possible_direction);
+            auto possible_edges = cell.getPossibleEdgesOnDirection(possible_direction);
+            if (!neighbour_cell.is_collapsed) {
+                bool was_reduced = neighbour_cell.reduceEntropyCell(possible_edges, possible_direction);
+                if (was_reduced)
+                    cells_to_collapse_p_stack.push(&neighbour_cell);
+            }
+        }
+    }
 }
 
 

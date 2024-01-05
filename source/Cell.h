@@ -19,7 +19,8 @@ public:
     void updateText();
     void drawInto(sf::RenderWindow& window) const;
     void collapseCell();
-    bool reduceEntropyCell(std::vector<size_t> possible_ids_on_dir, Cell::DIR dir_from);
+    bool reduceEntropyCell(std::vector<size_t> possible_edges_on_dir, Cell::DIR dir_from);
+    std::vector<size_t> getPossibleEdgesOnDirection(Cell::DIR direction);
 public:
     std::vector<Tile> m_possible_tiles;
     bool is_collapsed = false;
