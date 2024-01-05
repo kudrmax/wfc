@@ -1,6 +1,7 @@
 #pragma once
 
-const int W = 800;
-const int H = 800;
-const int BLOCK_SIZE = 200;
-const int BLOCK_COUNT = 4;
+const int H = 765;
+const int BLOCK_COUNT_H = 5;
+const int BLOCK_SIZE = H / BLOCK_COUNT_H;
+const int W = 16 * H / 9 - (16 * H / 9) % BLOCK_SIZE;
+const int BLOCK_COUNT_W = W / BLOCK_SIZE;

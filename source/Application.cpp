@@ -52,19 +52,19 @@ void Application::render() {
 }
 
 void Application::fillCells() {
-    for (int row = 0; row < BLOCK_COUNT; row++) {
+    for (int row = 0; row < BLOCK_COUNT_H; row++) {
         std::vector<Cell> row_vec;
         auto pos_zero = sf::Vector2f(BLOCK_SIZE / 2, BLOCK_SIZE / 2);
-        for (int col = 0; col < BLOCK_COUNT; col++) {
+        for (int col = 0; col < BLOCK_COUNT_W; col++) {
             auto pos = pos_zero + sf::Vector2f(col * BLOCK_SIZE, row * BLOCK_SIZE);
             std::vector<Cell::DIR> possible_directions = { Cell::U, Cell::R, Cell::D, Cell::L };
             if (row == 0)
                 possible_directions.erase(std::find(possible_directions.begin(), possible_directions.end(), Cell::U));
             if (col == 0)
                 possible_directions.erase(std::find(possible_directions.begin(), possible_directions.end(), Cell::L));
-            if (row == BLOCK_COUNT - 1)
+            if (row == BLOCK_COUNT_H - 1)
                 possible_directions.erase(std::find(possible_directions.begin(), possible_directions.end(), Cell::D));
-            if (col == BLOCK_COUNT - 1)
+            if (col == BLOCK_COUNT_W - 1)
                 possible_directions.erase(std::find(possible_directions.begin(), possible_directions.end(), Cell::R));
             row_vec.emplace_back(pos, m_tiles, std::move(possible_directions));
         }
@@ -73,24 +73,23 @@ void Application::fillCells() {
 }
 
 void Application::fillTiles() {
-    for (size_t i = 0; i < 4; i++) {
-        m_tiles.push_back({ "3.png", { 1, 1, 0, 1 }, i });
-    }
     m_tiles.push_back({ "blank.png", { 0, 0, 0, 0 }, 1 });
+    for (size_t i = 0; i < 4; i++)
+        m_tiles.push_back({ "3.png", { 1, 1, 0, 1 }, i });
 }
 
 std::vector<Cell*> Application::getLowestEntropyCells() {
     std::vector<Cell*> lowest_entropy_tiles;
     size_t lowest_entropy_size = 10000;
-    for (int row = 0; row < BLOCK_COUNT; row++) {
-        for (int col = 0; col < BLOCK_COUNT; col++) {
+    for (int row = 0; row < BLOCK_COUNT_H; row++) {
+        for (int col = 0; col < BLOCK_COUNT_W; col++) {
             auto entropy_size = m_cells[row][col].m_possible_tiles.size();
             if (entropy_size != 1 && entropy_size < lowest_entropy_size)
                 lowest_entropy_size = entropy_size;
         }
     }
-    for (int row = 0; row < BLOCK_COUNT; row++) {
-        for (int col = 0; col < BLOCK_COUNT; col++) {
+    for (int row = 0; row < BLOCK_COUNT_H; row++) {
+        for (int col = 0; col < BLOCK_COUNT_W; col++) {
             if (m_cells[row][col].m_possible_tiles.size() == lowest_entropy_size)
                 lowest_entropy_tiles.push_back(&m_cells[row][col]);
         }
@@ -106,8 +105,8 @@ Cell& Application::getLowestEntropyCell() {
 
 
 std::pair<size_t, size_t> Application::getCellsIndexesByReference(Cell& cell_ref) {
-    for (int row = 0; row < BLOCK_COUNT; row++) {
-        for (int col = 0; col < BLOCK_COUNT; col++) {
+    for (int row = 0; row < BLOCK_COUNT_H; row++) {
+        for (int col = 0; col < BLOCK_COUNT_W; col++) {
             if (&m_cells[row][col] == &cell_ref)
                 return { row, col };
         }

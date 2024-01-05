@@ -15,8 +15,11 @@ public:
 public:
     Cell() = default;
     Cell(const sf::Vector2f& pos, const std::vector<Tile>& tiles, std::vector<DIR>&& possible_directions);
+public:
     void drawInto(sf::RenderWindow& window) const;
     void collapseCell();
+    void updateCollapseStatus();
+    void updateTexture();
     std::vector<size_t> getPossibleEdgesOnDirection(Cell::DIR direction);
     bool reduceEntropyCell(std::vector<size_t> possible_edges_on_dir, Cell::DIR dir_from);
 public:
@@ -27,6 +30,4 @@ public:
     sf::Texture m_texture;
     sf::Font m_font;
     sf::Text m_text;
-    void updateCollapseStatus();
-    void updateTexture();
 };
