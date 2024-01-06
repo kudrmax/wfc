@@ -34,4 +34,6 @@ public:
     sf::Font m_font;
     sf::Text m_text;
     std::unordered_map<int, int> m_col_count;
+    size_t m_row;
+    size_t m_col;
 };

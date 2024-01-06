@@ -37,7 +37,7 @@ void Application::eventHandling() {
 
 void Application::update() {
 
-    if (m_clock.getElapsedTime().asSeconds() >= 0.2f) {
+    if (m_clock.getElapsedTime().asSeconds() >= 0.0f) {
         m_clock.restart().asSeconds();
 
         auto* cell_to_collapse = getLowestEntropyCell();
@@ -81,6 +81,12 @@ void Application::fillCells() {
             row_vec.emplace_back(pos, m_tiles, std::move(possible_directions));
         }
         m_cells.emplace_back(std::move(row_vec));
+    }
+    for (int row = 0; row < BLOCK_COUNT_H; row++) {
+        for (int col = 0; col < BLOCK_COUNT_W; col++) {
+            m_cells[row][col].m_row = row;
+            m_cells[row][col].m_col = col;
+        }
     }
 }
 
@@ -199,13 +205,14 @@ Cell* Application::getLowestEntropyCell() {
 
 
 std::pair<size_t, size_t> Application::getCellsIndexesByReference(Cell& cell_ref) {
-    for (int row = 0; row < BLOCK_COUNT_H; row++) {
-        for (int col = 0; col < BLOCK_COUNT_W; col++) {
-            if (&m_cells[row][col] == &cell_ref)
-                return { row, col };
-        }
-    }
-    return { -1, -1 };
+//    for (int row = 0; row < BLOCK_COUNT_H; row++) {
+//        for (int col = 0; col < BLOCK_COUNT_W; col++) {
+//            if (&m_cells[row][col] == &cell_ref)
+//                return { row, col };
+//        }
+//    }
+//    return { -1, -1 };
+    return { cell_ref.m_row, cell_ref.m_col };
 }
 
 Cell* Application::getNeighbour(Cell& cell_ref, Cell::DIR dir) {
