@@ -4,89 +4,75 @@
 #include "random.h"
 
 void Application::fillTiles() {
-    // demo
-//    m_tiles.push_back({ "demo/blank.png", { 0, 0, 0, 0 }, 1 });
-//    for (size_t i = 0; i < 4; i++)
-//        m_tiles.push_back({ "demo/3.png", { 1, 1, 0, 1 }, i });
+    switch (TILE_TYPE) {
+        case BLUE:
+            m_tiles.push_back({ "simple/0000.png", { 0, 0, 0, 0 }, 0 });
+            m_tiles.push_back({ "simple/1111.png", { 1, 1, 1, 1 }, 0 });
+            for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "simple/1101.png", { 1, 1, 0, 1 }, i });
+            for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "simple/0101.png", { 0, 1, 0, 1 }, i });
+            break;
+        case GREEN_KNOTS:
+            m_tiles.push_back({ "knots/empty.png", { 0, 0, 0, 0 }, 0 });
+            for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "knots/line.png", { 0, 1, 0, 1 }, i });
+            for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "knots/t.png", { 0, 1, 1, 1 }, i });
+            for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "knots/cross.png", { 1, 1, 1, 1 }, i });
+            for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "knots/corner.png", { 1, 1, 0, 0 }, i });
+            break;
+        case BLACK_AND_WHITE_ROADS:
+            m_tiles.push_back({ "black_and_white_roads/0.png", { 0, 0, 0, 0 }, 0 });
+            for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "black_and_white_roads/1.png", { 0, 1, 0, 1 }, i });
+            for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "black_and_white_roads/2.png", { 1, 1, 0, 1 }, i });
+            m_tiles.push_back({ "black_and_white_roads/3.png", { 1, 1, 1, 1 }, 0 });
+            for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "black_and_white_roads/4.png", { 0, 2, 0, 2 }, i });
+            for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "black_and_white_roads/5.png", { 2, 2, 0, 2 }, i });
+            m_tiles.push_back({ "black_and_white_roads/6.png", { 2, 2, 2, 2 }, 0 });
+            for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "black_and_white_roads/7.png", { 1, 2, 1, 2 }, i });
+            for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "black_and_white_roads/8.png", { 1, 2, 1, 2 }, i });
+            break;
+        case SUMMER:
+            m_tiles.push_back({ "summer/grass 0.png", { 0, 0, 0, 0 }, 0 });
+            m_tiles.push_back({ "summer/road 0.png", { 1, 1, 0, 1 }, 0 });
+            m_tiles.push_back({ "summer/road 1.png", { 1, 0, 1, 1 }, 0 });
+            m_tiles.push_back({ "summer/road 2.png", { 0, 1, 1, 1 }, 0 });
+            m_tiles.push_back({ "summer/road 3.png", { 1, 1, 1, 0 }, 0 });
+            m_tiles.push_back({ "summer/roadturn 1.png", { 1, 1, 0, 0 }, 0 });
+            m_tiles.push_back({ "summer/roadturn 1.png", { 1, 0, 0, 1 }, 0 });
+            m_tiles.push_back({ "summer/roadturn 2.png", { 0, 0, 1, 1 }, 0 });
+            m_tiles.push_back({ "summer/roadturn 3.png", { 0, 1, 1, 0 }, 0 });
 
-    // simple
-//    m_tiles.push_back({ "simple/0000.png", { 0, 0, 0, 0 }, 0 });
-//    m_tiles.push_back({ "simple/1111.png", { 1, 1, 1, 1 }, 0 });
-//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "simple/1101.png", { 1, 1, 0, 1 }, i });
-//    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "simple/0101.png", { 0, 1, 0, 1 }, i });
+            m_tiles.push_back({ "summer/cliff 0.png", { 0, 2, 0, 2 }, 0 });
+            m_tiles.push_back({ "summer/cliff 1.png", { 2, 0, 2, 0 }, 0 });
+            m_tiles.push_back({ "summer/cliff 2.png", { 0, 3, 0, 3 }, 0 });
+            m_tiles.push_back({ "summer/cliff 3.png", { 4, 0, 4, 0 }, 0 });
 
-    // complicated
-//    m_tiles.push_back({ "complicated/0.png", { 0, 0, 0, 0 }, 0 });
-//    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/1.png", { 0, 1, 0, 1 }, i });
-//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "complicated/2.png", { 1, 1, 0, 1 }, i });
-//    m_tiles.push_back({ "complicated/3.png", { 1, 1, 1, 1 }, 0 });
-//    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/4.png", { 0, 2, 0, 2 }, i });
-//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "complicated/5.png", { 2, 2, 0, 2 }, i });
-//    m_tiles.push_back({ "complicated/6.png", { 2, 2, 2, 2 }, 0 });
-//    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/7.png", { 1, 2, 1, 2 }, i });
-//    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "complicated/8.png", { 1, 2, 1, 2 }, i });
-////    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "complicated/9.png", { 2, 0, 1, 0 }, i });
-////    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "complicated/10.png", { 2, 2, 1, 1 }, i });
+            m_tiles.push_back({ "summer/cliffcorner 0.png", { 2, 3, 0, 0 }, 0 });
+            m_tiles.push_back({ "summer/cliffcorner 1.png", { 4, 0, 0, 5 }, 0 });
+            m_tiles.push_back({ "summer/cliffcorner 2.png", { 0, 0, 7, 6 }, 0 });
+            m_tiles.push_back({ "summer/cliffcorner 3.png", { 0, 10, 2, 0 }, 0 });
+            m_tiles.push_back({ "summer/cliffturn 0.png", { 2, 2, 0, 0 }, 0 });
+            m_tiles.push_back({ "summer/cliffturn 1.png", { 2, 0, 0, 2 }, 0 });
+            m_tiles.push_back({ "summer/cliffturn 2.png", { 0, 0, 2, 3 }, 0 });
+            m_tiles.push_back({ "summer/cliffturn 3.png", { 0, 3, 4, 0 }, 0 });
 
-    // knots
-    m_tiles.push_back({ "knots/empty.png", { 0, 0, 0, 0 }, 0 });
-    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "knots/line.png", { 0, 1, 0, 1 }, i });
-    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "knots/t.png", { 0, 1, 1, 1 }, i });
-    for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "knots/cross.png", { 1, 1, 1, 1 }, i });
-    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "knots/corner.png", { 1, 1, 0, 0 }, i });
-
-    // summer
-//    m_tiles.push_back({ "summer/grass 0.png", { 0, 0, 0, 0 }, 0 });
-//    m_tiles.push_back({ "summer/road 0.png", { 1, 1, 0, 1 }, 0 });
-//    m_tiles.push_back({ "summer/road 1.png", { 1, 0, 1, 1 }, 0 });
-//    m_tiles.push_back({ "summer/road 2.png", { 0, 1, 1, 1 }, 0 });
-//    m_tiles.push_back({ "summer/road 3.png", { 1, 1, 1, 0 }, 0 });
-//    m_tiles.push_back({ "summer/roadturn 1.png", { 1, 1, 0, 0 }, 0 });
-//    m_tiles.push_back({ "summer/roadturn 1.png", { 1, 0, 0, 1 }, 0 });
-//    m_tiles.push_back({ "summer/roadturn 2.png", { 0, 0, 1, 1 }, 0 });
-//    m_tiles.push_back({ "summer/roadturn 3.png", { 0, 1, 1, 0 }, 0 });
-//
-//    m_tiles.push_back({ "summer/cliff 0.png", { 0, 2, 0, 2 }, 0 });
-//    m_tiles.push_back({ "summer/cliff 1.png", { 2, 0, 2, 0 }, 0 });
-//    m_tiles.push_back({ "summer/cliff 2.png", { 0, 3, 0, 3 }, 0 });
-//    m_tiles.push_back({ "summer/cliff 3.png", { 4, 0, 4, 0 }, 0 });
-//
-//    m_tiles.push_back({ "summer/cliffcorner 0.png", { 2, 3, 0, 0 }, 0 });
-//    m_tiles.push_back({ "summer/cliffcorner 1.png", { 4, 0, 0, 5 }, 0 });
-//    m_tiles.push_back({ "summer/cliffcorner 2.png", { 0, 0, 7, 6 }, 0 });
-//    m_tiles.push_back({ "summer/cliffcorner 3.png", { 0, 10, 2, 0 }, 0 });
-//    m_tiles.push_back({ "summer/cliffturn 0.png", { 2, 2, 0, 0 }, 0 });
-//    m_tiles.push_back({ "summer/cliffturn 1.png", { 2, 0, 0, 2 }, 0 });
-//    m_tiles.push_back({ "summer/cliffturn 2.png", { 0, 0, 2, 3 }, 0 });
-//    m_tiles.push_back({ "summer/cliffturn 3.png", { 0, 3, 4, 0 }, 0 });
-//
-//    m_tiles.push_back({ "summer/water_a 0.png", { 11, 11, 11, 11 }, 0 });
-//    m_tiles.push_back({ "summer/water_b 0.png", { 11, 11, 11, 11 }, 0 });
-//    m_tiles.push_back({ "summer/water_c 0.png", { 11, 11, 11, 11 }, 0 });
-//    m_tiles.push_back({ "summer/watercorner 0.png", { 14, 16, 0, 0 }, 0 });
-//    m_tiles.push_back({ "summer/watercorner 1.png", { 12, 0, 0, 16 }, 0 });
-//    m_tiles.push_back({ "summer/watercorner 2.png", { 0, 0, 12, 12 }, 0 });
-//    m_tiles.push_back({ "summer/watercorner 3.png", { 0, 12, 14, 0 }, 0 });
-//    m_tiles.push_back({ "summer/waterside 0.png", { 11, 16, 0, 16 }, 0 });
-//    m_tiles.push_back({ "summer/waterside 1.png", { 13, 0, 13, 11 }, 0 });
-//    m_tiles.push_back({ "summer/waterside 2.png", { 0, 12, 11, 12 }, 0 });
-//    m_tiles.push_back({ "summer/waterside 3.png", { 14, 11, 14, 0 }, 0 });
-//    m_tiles.push_back({ "summer/waterturn 0.png", { 11, 11, 14, 16 }, 0 });
-//    m_tiles.push_back({ "summer/waterturn 1.png", { 11, 16, 13, 11 }, 0 });
-//    m_tiles.push_back({ "summer/waterturn 2.png", { 13, 12, 11, 11 }, 0 });
-//    m_tiles.push_back({ "summer/waterturn 3.png", { 14, 11, 11, 12 }, 0 });
-
-    // my
-//    m_tiles.push_back({ "my/0000.png", { 0, 0, 0, 0 }, 0 });
-//    m_tiles.push_back({ "my/1111.png", { 1, 1, 1, 1 }, 0 });
-//    m_tiles.push_back({ "my/2222.png", { 2, 2, 2, 2 }, 0 });
-//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "my/0110.png", { 0, 1, 1, 0 }, i });
-//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "my/1001.png", { 1, 0, 0, 1 }, i });
-//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "my/1112.png", { 1, 1, 1, 2 }, i });
-//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "my/1143.png", { 1, 1, 4, 3 }, i });
-//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "my/1431.png", { 1, 3, 4, 1 }, i });
-//    for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "my/3141.png", { 3, 1, 4, 1 }, i });
-
+            m_tiles.push_back({ "summer/water_a 0.png", { 11, 11, 11, 11 }, 0 });
+            m_tiles.push_back({ "summer/water_b 0.png", { 11, 11, 11, 11 }, 0 });
+            m_tiles.push_back({ "summer/water_c 0.png", { 11, 11, 11, 11 }, 0 });
+            m_tiles.push_back({ "summer/watercorner 0.png", { 14, 16, 0, 0 }, 0 });
+            m_tiles.push_back({ "summer/watercorner 1.png", { 12, 0, 0, 16 }, 0 });
+            m_tiles.push_back({ "summer/watercorner 2.png", { 0, 0, 12, 12 }, 0 });
+            m_tiles.push_back({ "summer/watercorner 3.png", { 0, 12, 14, 0 }, 0 });
+            m_tiles.push_back({ "summer/waterside 0.png", { 11, 16, 0, 16 }, 0 });
+            m_tiles.push_back({ "summer/waterside 1.png", { 13, 0, 13, 11 }, 0 });
+            m_tiles.push_back({ "summer/waterside 2.png", { 0, 12, 11, 12 }, 0 });
+            m_tiles.push_back({ "summer/waterside 3.png", { 14, 11, 14, 0 }, 0 });
+            m_tiles.push_back({ "summer/waterturn 0.png", { 11, 11, 14, 16 }, 0 });
+            m_tiles.push_back({ "summer/waterturn 1.png", { 11, 16, 13, 11 }, 0 });
+            m_tiles.push_back({ "summer/waterturn 2.png", { 13, 12, 11, 11 }, 0 });
+            m_tiles.push_back({ "summer/waterturn 3.png", { 14, 11, 11, 12 }, 0 });
+            break;
+        default:
+            m_tiles.push_back({ "simple/0000.png", { 0, 0, 0, 0 }, 0 });
+    }
 }
 
 Application::Application() {
@@ -134,8 +120,7 @@ void Application::update() {
         if (m_cells_to_collapse_p_stack.empty()) {
             if (!is_on_pause)
                 collapseCell(getLowestEntropyCell());
-        }
-        else
+        } else
             waveFunctionCollapse();
     }
 }
