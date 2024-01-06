@@ -110,6 +110,15 @@ void Application::eventHandling() {
     while (m_window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             m_window.close();
+        if (event.type == sf::Event::MouseButtonReleased) {
+            if (event.mouseButton.button == sf::Mouse::Button::Right) {
+                sf::Vector2i pixel_pos = sf::Mouse::getPosition(m_window);
+                sf::Vector2f pos = m_window.mapPixelToCoords(pixel_pos);
+                int col = BLOCK_COUNT_W * pos.x / W;
+                int row = BLOCK_COUNT_H * pos.y / H;
+                collapseCell(&m_cells[row][col]);
+            }
+        }
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Space) {
                 sf::Vector2i pixel_pos = sf::Mouse::getPosition(m_window);
