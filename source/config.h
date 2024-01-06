@@ -10,11 +10,11 @@ enum TileType {
     SUMMER // betta version
 };
 
-// настраиваемые вручную параметра
+// настраиваемые вручную параметры
 const int H = 800; // высота окна
-const int BLOCK_COUNT_H = 12; // количество фрагментов разбиения по вертикали
+const int BLOCK_COUNT_H = 40; // количество фрагментов разбиения по вертикали
 const float DELTA_TIME = 0.005f; // минимальное время между итерациями (0 для наискорейшей генерации)
-const TileType TILE_TYPE = TileType::GREEN_KNOTS;
+const TileType TILE_TYPE = TileType::BLACK_AND_WHITE_ROADS;
 
 // параметры, которые высчитываются автоматически
 const int BLOCK_SIZE = H / BLOCK_COUNT_H; // размер одного фрагмента разбиения
