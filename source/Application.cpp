@@ -35,7 +35,7 @@ void Application::fillTiles() {
             m_tiles.push_back({ "summer/road 1.png", { 1, 0, 1, 1 }, 0 });
             m_tiles.push_back({ "summer/road 2.png", { 0, 1, 1, 1 }, 0 });
             m_tiles.push_back({ "summer/road 3.png", { 1, 1, 1, 0 }, 0 });
-            m_tiles.push_back({ "summer/roadturn 1.png", { 1, 1, 0, 0 }, 0 });
+            m_tiles.push_back({ "summer/roadturn 0.png", { 1, 1, 0, 0 }, 0 });
             m_tiles.push_back({ "summer/roadturn 1.png", { 1, 0, 0, 1 }, 0 });
             m_tiles.push_back({ "summer/roadturn 2.png", { 0, 0, 1, 1 }, 0 });
             m_tiles.push_back({ "summer/roadturn 3.png", { 0, 1, 1, 0 }, 0 });
@@ -46,7 +46,7 @@ void Application::fillTiles() {
             m_tiles.push_back({ "summer/cliff 3.png", { 4, 0, 4, 0 }, 0 });
 
             m_tiles.push_back({ "summer/cliffcorner 0.png", { 2, 3, 0, 0 }, 0 });
-            m_tiles.push_back({ "summer/cliffcorner 1.png", { 4, 0, 0, 5 }, 0 });
+            m_tiles.push_back({ "summer/cliffcorner 1.png", { 4, 0, 0, 3 }, 0 });
             m_tiles.push_back({ "summer/cliffcorner 2.png", { 0, 0, 7, 6 }, 0 });
             m_tiles.push_back({ "summer/cliffcorner 3.png", { 0, 10, 2, 0 }, 0 });
             m_tiles.push_back({ "summer/cliffturn 0.png", { 2, 2, 0, 0 }, 0 });
@@ -70,6 +70,57 @@ void Application::fillTiles() {
             m_tiles.push_back({ "summer/waterturn 2.png", { 13, 12, 11, 11 }, 0 });
             m_tiles.push_back({ "summer/waterturn 3.png", { 14, 11, 11, 12 }, 0 });
             break;
+        case PLATFORMER:
+//            m_tiles.push_back({ "platformer/sky 0.png", { 0, 0, 0, 0 }, 0 });
+//            m_tiles.push_back({ "platformer/sky 3.png", { 0, 0, 0, 0 }, 0 });
+//
+//            m_tiles.push_back({ "platformer/sky 0.png", { 0, 0, 1, 0 }, 0 });
+//            m_tiles.push_back({ "platformer/sky 1.png", { 0, 0, 1, 0 }, 0 });
+//            m_tiles.push_back({ "platformer/sky 2.png", { 0, 0, 1, 0 }, 0 });
+//            m_tiles.push_back({ "platformer/sky 3.png", { 0, 0, 1, 0 }, 0 });
+//
+//            m_tiles.push_back({ "platformer/dirt 0.png", { 2, 2, 2, 2 }, 0 });
+//            m_tiles.push_back({ "platformer/dirt 1.png", { 0, 0, 0, 3 }, 0 });
+//            m_tiles.push_back({ "platformer/dirt 2.png", { 0, 3, 0, 0 }, 0 });
+//            m_tiles.push_back({ "platformer/dirt 3.png", { 0, 0, 3, 0 }, 0 });
+//            m_tiles.push_back({ "platformer/dirt 4.png", { 0, 0, 3, 3 }, 0 });
+//            m_tiles.push_back({ "platformer/dirt 5.png", { 0, 3, 3, 0 }, 0 });
+//            m_tiles.push_back({ "platformer/dirt 6.png", { 1, 4, 0, 4 }, 0 });
+//            m_tiles.push_back({ "platformer/dirt 7.png", { 1, 4, 0, 1 }, 0 });
+//            m_tiles.push_back({ "platformer/dirt 8.png", { 1, 1, 0, 4 }, 0 });
+
+            m_tiles.push_back({ "platformer 2/dirt 0.png", { 0, 0, 0, 0 }, 0 });
+            m_tiles.push_back({ "platformer 2/dirt 0.png", { 0, 0, 3, 0 }, 0 });
+            m_tiles.push_back({ "platformer 2/dirt 1.png", { 1, 2, 0, 2 }, 0 });
+            m_tiles.push_back({ "platformer 2/dirt 1.png", { 1, 3, 0, 2 }, 0 });
+            m_tiles.push_back({ "platformer 2/dirt 1.png", { 1, 2, 0, 3 }, 0 });
+            m_tiles.push_back({ "platformer 2/dirt 1.png", { 1, 3, 0, 3 }, 0 });
+            m_tiles.push_back({ "platformer 2/tree 0.png", { 3, 3, 1, 3 }, 0 });
+            m_tiles.push_back({ "platformer 2/tree 1.png", { 3, 3, 1, 3 }, 0 });
+            m_tiles.push_back({ "platformer 2/sky 0.png", { 3, 3, 3, 3 }, 0 });
+            m_tiles.push_back({ "platformer 2/sky 0.png", { 3, 3, 1, 3 }, 0 });
+            break;
+        case TRAIN:
+            m_tiles.push_back({ "train/blank.png", { 0, 0, 0, 0 }, 0 });
+            for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "train/down.png", { 0, 1, 1, 1 }, i });
+            break;
+        case POLKA:
+            m_tiles.push_back({ "polka/5.png", { 1, 1, 1, 1 }, 0 });
+            m_tiles.push_back({ "polka/8.png", { 0 ,0 ,0 ,0 }, 0 });
+            m_tiles.push_back({ "polka/9.png", { 3, 3, 3, 3 }, 0 });
+            for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "polka/0.png", { 0, 1, 1, 1 }, i });
+            for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "polka/1.png", { 0, 0, 1, 1 }, i });
+            for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "polka/2.png", { 0, 0, 1, 0 }, i });
+            for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "polka/3.png", { 0, 0, 2, 0 }, i });
+            for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "polka/4.png", { 0, 3, 3, 3 }, i });
+            for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "polka/6.png", { 0, 0, 3, 3 }, i });
+            for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "polka/7.png", { 0, 0, 0, 3 }, i });
+            for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "polka/10.png", { 1, 3, 1, 3 }, i });
+            for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "polka/11.png", { 1, 0, 2, 0 }, i });
+            for (size_t i = 0; i < 4; i++) m_tiles.push_back({ "polka/12.png", { 3, 0, 2, 0 }, i });
+            break;
+
+
         default:
             m_tiles.push_back({ "simple/0000.png", { 0, 0, 0, 0 }, 0 });
     }
