@@ -90,11 +90,7 @@ void Application::fillTiles() {
 }
 
 Application::Application() {
-    fillTiles();
-    fillCells();
-    for (auto& row: m_cells)
-        for (auto& cell: row)
-            cell.updateTexture();
+    generateFromScratch();
 }
 
 void Application::run() {
@@ -120,12 +116,8 @@ void Application::eventHandling() {
             }
         }
         if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Space) {
-                sf::Vector2i pixel_pos = sf::Mouse::getPosition(m_window);
-                sf::Vector2f pos = m_window.mapPixelToCoords(pixel_pos);
-                int col = BLOCK_COUNT_W * pos.x / W;
-                int row = BLOCK_COUNT_H * pos.y / H;
-                collapseCell(&m_cells[row][col]);
+            if (event.key.code == sf::Keyboard::R) {
+                generateFromScratch();
             }
         }
     }
@@ -247,6 +239,18 @@ void Application::collapseCell(Cell* cell_to_collapse) {
         cell_to_collapse->collapseCell();
         m_cells_to_collapse_p_stack.push(cell_to_collapse);
     }
+}
+
+void Application::generateFromScratch() {
+    m_cells_to_collapse_p_stack = std::stack<Cell*>{};
+    m_tiles.clear();
+    m_cells.clear();
+    m_clock = sf::Clock{};
+    fillTiles();
+    fillCells();
+    for (auto& row: m_cells)
+        for (auto& cell: row)
+            cell.updateTexture();
 }
 
 
