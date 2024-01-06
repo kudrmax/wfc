@@ -3,90 +3,6 @@
 #include <algorithm>
 #include "random.h"
 
-Application::Application() {
-    fillTiles();
-    fillCells();
-    for (auto& row: m_cells)
-        for (auto& cell: row)
-            cell.updateTexture();
-}
-
-void Application::run() {
-    while (m_window.isOpen()) {
-        eventHandling();
-        update();
-        render();
-    }
-}
-
-void Application::eventHandling() {
-    sf::Event event;
-    while (m_window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed)
-            m_window.close();
-        if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Space) {
-                sf::Vector2i pixel_pos = sf::Mouse::getPosition(m_window);
-                sf::Vector2f pos = m_window.mapPixelToCoords(pixel_pos);
-                int col = BLOCK_COUNT_W * pos.x / W;
-                int row = BLOCK_COUNT_H * pos.y / H;
-                collapseCell(&m_cells[row][col]);
-            }
-        }
-    }
-}
-
-void Application::update() {
-
-    if (m_clock.getElapsedTime().asSeconds() >= 0.03f) {
-        m_clock.restart().asSeconds();
-
-        if (m_cells_to_collapse_p_stack.empty())
-            collapseCell(getLowestEntropyCell());
-        else
-            waveFunctionCollapse();
-    }
-}
-
-void Application::render() {
-    m_window.clear();
-
-    for (auto& row: m_cells) {
-        for (auto& cell: row) {
-            cell.drawInto(m_window);
-        }
-    }
-
-    m_window.display();
-}
-
-void Application::fillCells() {
-    for (int row = 0; row < BLOCK_COUNT_H; row++) {
-        std::vector<Cell> row_vec;
-        auto pos_zero = sf::Vector2f(BLOCK_SIZE / 2, BLOCK_SIZE / 2);
-        for (int col = 0; col < BLOCK_COUNT_W; col++) {
-            auto pos = pos_zero + sf::Vector2f(col * BLOCK_SIZE, row * BLOCK_SIZE);
-            std::vector<Cell::DIR> possible_directions = { Cell::U, Cell::R, Cell::D, Cell::L };
-            if (row == 0)
-                possible_directions.erase(std::find(possible_directions.begin(), possible_directions.end(), Cell::U));
-            if (col == 0)
-                possible_directions.erase(std::find(possible_directions.begin(), possible_directions.end(), Cell::L));
-            if (row == BLOCK_COUNT_H - 1)
-                possible_directions.erase(std::find(possible_directions.begin(), possible_directions.end(), Cell::D));
-            if (col == BLOCK_COUNT_W - 1)
-                possible_directions.erase(std::find(possible_directions.begin(), possible_directions.end(), Cell::R));
-            row_vec.emplace_back(pos, m_tiles, std::move(possible_directions));
-        }
-        m_cells.emplace_back(std::move(row_vec));
-    }
-    for (int row = 0; row < BLOCK_COUNT_H; row++) {
-        for (int col = 0; col < BLOCK_COUNT_W; col++) {
-            m_cells[row][col].m_row = row;
-            m_cells[row][col].m_col = col;
-        }
-    }
-}
-
 void Application::fillTiles() {
     // demo
 //    m_tiles.push_back({ "demo/blank.png", { 0, 0, 0, 0 }, 1 });
@@ -173,6 +89,86 @@ void Application::fillTiles() {
 
 }
 
+Application::Application() {
+    fillTiles();
+    fillCells();
+    for (auto& row: m_cells)
+        for (auto& cell: row)
+            cell.updateTexture();
+}
+
+void Application::run() {
+    while (m_window.isOpen()) {
+        eventHandling();
+        update();
+        render();
+    }
+}
+
+void Application::eventHandling() {
+    sf::Event event;
+    while (m_window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed)
+            m_window.close();
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Space) {
+                sf::Vector2i pixel_pos = sf::Mouse::getPosition(m_window);
+                sf::Vector2f pos = m_window.mapPixelToCoords(pixel_pos);
+                int col = BLOCK_COUNT_W * pos.x / W;
+                int row = BLOCK_COUNT_H * pos.y / H;
+                collapseCell(&m_cells[row][col]);
+            }
+        }
+    }
+}
+
+void Application::update() {
+
+    if (m_clock.getElapsedTime().asSeconds() >= DELTA_TIME) {
+        m_clock.restart().asSeconds();
+
+        if (m_cells_to_collapse_p_stack.empty())
+            collapseCell(getLowestEntropyCell());
+        else
+            waveFunctionCollapse();
+    }
+}
+
+void Application::render() {
+    m_window.clear();
+    for (const auto& row: m_cells)
+        for (const auto& cell: row)
+            cell.drawInto(m_window);
+    m_window.display();
+}
+
+void Application::fillCells() {
+    for (int row = 0; row < BLOCK_COUNT_H; row++) {
+        std::vector<Cell> row_vec;
+        auto pos_zero = sf::Vector2f(BLOCK_SIZE / 2, BLOCK_SIZE / 2);
+        for (int col = 0; col < BLOCK_COUNT_W; col++) {
+            auto pos = pos_zero + sf::Vector2f(col * BLOCK_SIZE, row * BLOCK_SIZE);
+            std::vector<Cell::DIR> possible_directions = { Cell::U, Cell::R, Cell::D, Cell::L };
+            if (row == 0)
+                possible_directions.erase(std::find(possible_directions.begin(), possible_directions.end(), Cell::U));
+            if (col == 0)
+                possible_directions.erase(std::find(possible_directions.begin(), possible_directions.end(), Cell::L));
+            if (row == BLOCK_COUNT_H - 1)
+                possible_directions.erase(std::find(possible_directions.begin(), possible_directions.end(), Cell::D));
+            if (col == BLOCK_COUNT_W - 1)
+                possible_directions.erase(std::find(possible_directions.begin(), possible_directions.end(), Cell::R));
+            row_vec.emplace_back(pos, m_tiles, std::move(possible_directions));
+        }
+        m_cells.emplace_back(std::move(row_vec));
+    }
+    for (int row = 0; row < BLOCK_COUNT_H; row++) {
+        for (int col = 0; col < BLOCK_COUNT_W; col++) {
+            m_cells[row][col].m_row = row;
+            m_cells[row][col].m_col = col;
+        }
+    }
+}
+
 std::vector<Cell*> Application::getLowestEntropyCells() {
     std::vector<Cell*> lowest_entropy_tiles;
     size_t lowest_entropy_size = 10000;
@@ -201,19 +197,12 @@ Cell* Application::getLowestEntropyCell() {
 }
 
 
-std::pair<size_t, size_t> Application::getCellsIndexesByReference(Cell& cell_ref) {
-//    for (int row = 0; row < BLOCK_COUNT_H; row++) {
-//        for (int col = 0; col < BLOCK_COUNT_W; col++) {
-//            if (&m_cells[row][col] == &cell_ref)
-//                return { row, col };
-//        }
-//    }
-//    return { -1, -1 };
+std::pair<size_t, size_t> Application::getCellsIndexes(Cell& cell_ref) {
     return { cell_ref.m_row, cell_ref.m_col };
 }
 
 Cell* Application::getNeighbour(Cell& cell_ref, Cell::DIR dir) {
-    auto [row, col] = getCellsIndexesByReference(cell_ref);
+    auto [row, col] = getCellsIndexes(cell_ref);
     if (row == -1 || col == -1)
         return nullptr;
     switch (dir) {
