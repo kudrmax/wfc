@@ -7,17 +7,17 @@ enum TileType {
     GREEN_KNOTS,
     BLACK_AND_WHITE_ROADS,
     BLUE,
-    SUMMER, // betta version
-    PLATFORMER, // betta version
     TRAIN,
-    POLKA
+    POLKA,
+    GAME, // betta version
+    PLATFORMER // betta version
 };
 
 // настраиваемые вручную параметры
 const int H = 800; // высота окна
-const int BLOCK_COUNT_H = 10; // количество фрагментов разбиения по вертикали
+const int BLOCK_COUNT_H = 4; // количество фрагментов разбиения по вертикали
 const float DELTA_TIME = 0.000f; // минимальное время между итерациями (0 для наискорейшей генерации)
-const TileType TILE_TYPE = TileType::BLACK_AND_WHITE_ROADS;
+const TileType TILE_TYPE = TileType::GAME; // изображения, которые будут использоваться для генерации
 
 // параметры, которые высчитываются автоматически
 const int BLOCK_SIZE = H / BLOCK_COUNT_H; // размер одного фрагмента разбиения

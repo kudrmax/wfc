@@ -29,7 +29,7 @@ void Application::fillTiles() {
             for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "black_and_white_roads/7.png", { 1, 2, 1, 2 }, i });
             for (size_t i = 0; i < 2; i++) m_tiles.push_back({ "black_and_white_roads/8.png", { 1, 2, 1, 2 }, i });
             break;
-        case SUMMER:
+        case GAME:
             m_tiles.push_back({ "summer/grass 0.png", { 0, 0, 0, 0 }, 0 });
             m_tiles.push_back({ "summer/road 0.png", { 1, 1, 0, 1 }, 0 });
             m_tiles.push_back({ "summer/road 1.png", { 1, 0, 1, 1 }, 0 });
@@ -71,34 +71,16 @@ void Application::fillTiles() {
             m_tiles.push_back({ "summer/waterturn 3.png", { 14, 11, 11, 12 }, 0 });
             break;
         case PLATFORMER:
-//            m_tiles.push_back({ "platformer/sky 0.png", { 0, 0, 0, 0 }, 0 });
-//            m_tiles.push_back({ "platformer/sky 3.png", { 0, 0, 0, 0 }, 0 });
-//
-//            m_tiles.push_back({ "platformer/sky 0.png", { 0, 0, 1, 0 }, 0 });
-//            m_tiles.push_back({ "platformer/sky 1.png", { 0, 0, 1, 0 }, 0 });
-//            m_tiles.push_back({ "platformer/sky 2.png", { 0, 0, 1, 0 }, 0 });
-//            m_tiles.push_back({ "platformer/sky 3.png", { 0, 0, 1, 0 }, 0 });
-//
-//            m_tiles.push_back({ "platformer/dirt 0.png", { 2, 2, 2, 2 }, 0 });
-//            m_tiles.push_back({ "platformer/dirt 1.png", { 0, 0, 0, 3 }, 0 });
-//            m_tiles.push_back({ "platformer/dirt 2.png", { 0, 3, 0, 0 }, 0 });
-//            m_tiles.push_back({ "platformer/dirt 3.png", { 0, 0, 3, 0 }, 0 });
-//            m_tiles.push_back({ "platformer/dirt 4.png", { 0, 0, 3, 3 }, 0 });
-//            m_tiles.push_back({ "platformer/dirt 5.png", { 0, 3, 3, 0 }, 0 });
-//            m_tiles.push_back({ "platformer/dirt 6.png", { 1, 4, 0, 4 }, 0 });
-//            m_tiles.push_back({ "platformer/dirt 7.png", { 1, 4, 0, 1 }, 0 });
-//            m_tiles.push_back({ "platformer/dirt 8.png", { 1, 1, 0, 4 }, 0 });
-
-            m_tiles.push_back({ "platformer 2/dirt 0.png", { 0, 0, 0, 0 }, 0 });
-            m_tiles.push_back({ "platformer 2/dirt 0.png", { 0, 0, 3, 0 }, 0 });
-            m_tiles.push_back({ "platformer 2/dirt 1.png", { 1, 2, 0, 2 }, 0 });
-            m_tiles.push_back({ "platformer 2/dirt 1.png", { 1, 3, 0, 2 }, 0 });
-            m_tiles.push_back({ "platformer 2/dirt 1.png", { 1, 2, 0, 3 }, 0 });
-            m_tiles.push_back({ "platformer 2/dirt 1.png", { 1, 3, 0, 3 }, 0 });
-            m_tiles.push_back({ "platformer 2/tree 0.png", { 3, 3, 1, 3 }, 0 });
-            m_tiles.push_back({ "platformer 2/tree 1.png", { 3, 3, 1, 3 }, 0 });
-            m_tiles.push_back({ "platformer 2/sky 0.png", { 3, 3, 3, 3 }, 0 });
-            m_tiles.push_back({ "platformer 2/sky 0.png", { 3, 3, 1, 3 }, 0 });
+            m_tiles.push_back({ "platformer/dirt 0.png", { 0, 0, 0, 0 }, 0 });
+            m_tiles.push_back({ "platformer/dirt 0.png", { 0, 0, 3, 0 }, 0 });
+            m_tiles.push_back({ "platformer/dirt 1.png", { 1, 2, 0, 2 }, 0 });
+            m_tiles.push_back({ "platformer/dirt 1.png", { 1, 3, 0, 2 }, 0 });
+            m_tiles.push_back({ "platformer/dirt 1.png", { 1, 2, 0, 3 }, 0 });
+            m_tiles.push_back({ "platformer/dirt 1.png", { 1, 3, 0, 3 }, 0 });
+            m_tiles.push_back({ "platformer/tree 0.png", { 3, 3, 1, 3 }, 0 });
+            m_tiles.push_back({ "platformer/tree 1.png", { 3, 3, 1, 3 }, 0 });
+            m_tiles.push_back({ "platformer/sky 0.png", { 3, 3, 3, 3 }, 0 });
+            m_tiles.push_back({ "platformer/sky 0.png", { 3, 3, 1, 3 }, 0 });
             break;
         case TRAIN:
             m_tiles.push_back({ "train/blank.png", { 0, 0, 0, 0 }, 0 });
