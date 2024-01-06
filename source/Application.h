@@ -21,11 +21,12 @@ private:
     Cell* getNeighbour(Cell& cell_ref, Cell::DIR dir);
     Cell* waveFunctionCollapse();
     void collapseCell(Cell* cell_to_collapse);
+    void generateFromScratch();
 private:
     sf::RenderWindow m_window{ sf::VideoMode(W, H), "WFC"};
     std::vector<std::vector<Cell>> m_cells;
     std::vector<Tile> m_tiles;
     sf::Clock m_clock;
     std::stack<Cell*> m_cells_to_collapse_p_stack;
-    void generateFromScratch();
+    bool is_on_pause = true;
 };

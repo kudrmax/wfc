@@ -106,7 +106,7 @@ void Application::eventHandling() {
     while (m_window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             m_window.close();
-        if (event.type == sf::Event::MouseButtonReleased) {
+        if (event.type == sf::Event::MouseButtonPressed) {
             if (event.mouseButton.button == sf::Mouse::Button::Right) {
                 sf::Vector2i pixel_pos = sf::Mouse::getPosition(m_window);
                 sf::Vector2f pos = m_window.mapPixelToCoords(pixel_pos);
@@ -115,9 +115,12 @@ void Application::eventHandling() {
                 collapseCell(&m_cells[row][col]);
             }
         }
-        if (event.type == sf::Event::KeyPressed) {
+        if (event.type == sf::Event::KeyReleased) {
             if (event.key.code == sf::Keyboard::R) {
                 generateFromScratch();
+            }
+            if (event.key.code == sf::Keyboard::Space || event.key.code == sf::Keyboard::Enter) {
+                is_on_pause = !is_on_pause;
             }
         }
     }
@@ -128,8 +131,10 @@ void Application::update() {
     if (m_clock.getElapsedTime().asSeconds() >= DELTA_TIME) {
         m_clock.restart().asSeconds();
 
-        if (m_cells_to_collapse_p_stack.empty())
-            collapseCell(getLowestEntropyCell());
+        if (m_cells_to_collapse_p_stack.empty()) {
+            if (!is_on_pause)
+                collapseCell(getLowestEntropyCell());
+        }
         else
             waveFunctionCollapse();
     }

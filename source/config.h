@@ -3,7 +3,8 @@
 #include <unordered_map>
 
 const int H = 800;
-const int BLOCK_COUNT_H = 7;
+const int BLOCK_COUNT_H = 12;
+//const float DELTA_TIME = 0.0f;
 const float DELTA_TIME = 0.02f;
 
 const int MAX_TILE_COUNT = 100;
