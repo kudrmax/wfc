@@ -112,26 +112,10 @@ void Cell::updateTexture() {
         m_texture = temp;
         m_body.setTexture(&m_texture);
     }
-//    if (!m_font.loadFromFile("PixelFont.ttf"))
-//        throw std::runtime_error("No such file in directory");
-//    m_text.setFont(m_font);
-//    std::string tile_str;
-//    for (auto& tile: m_possible_tiles) {
-//        tile_str += tile.print_sfml() + " ";
-//    }
-//    m_text.setString(std::to_string(is_collapsed) + "\n" +
-//                     std::to_string(m_possible_tiles.size()) + "\n" +
-//                     tile_str);
-//    m_text.setCharacterSize(50);
-//    auto textRect = m_text.getLocalBounds();
-//    m_text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-//    m_text.setPosition(m_body.getPosition());
-//    m_text.setFillColor(sf::Color::White);
-//    m_text.setOutlineColor(sf::Color::Black);
-//    m_text.setOutlineThickness(4);
 }
 
 void Cell::fillRowCount() {
+    auto MAX_TILE_COUNT = 100;
     for (int i = 1; i < MAX_TILE_COUNT; i++) {
         for (int num = 1; num < MAX_TILE_COUNT; num++) {
             if (i <= num * num) {
