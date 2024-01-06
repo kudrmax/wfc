@@ -6,6 +6,9 @@
 Application::Application() {
     fillTiles();
     fillCells();
+    for (auto& row: m_cells)
+        for (auto& cell: row)
+            cell.updateTexture();
 }
 
 void Application::run() {
@@ -27,9 +30,7 @@ void Application::eventHandling() {
                 sf::Vector2f pos = m_window.mapPixelToCoords(pixel_pos);
                 int col = BLOCK_COUNT_W * pos.x / W;
                 int row = BLOCK_COUNT_H * pos.y / H;
-                std::cout << row << " " << col << "\n";
-                m_cells[row][col].collapseCell();
-                waveFunctionCollapse(m_cells[row][col]);
+                collapseCell(&m_cells[row][col]);
             }
         }
     }
@@ -37,18 +38,14 @@ void Application::eventHandling() {
 
 void Application::update() {
 
-    if (m_clock.getElapsedTime().asSeconds() >= 0.0f) {
+    if (m_clock.getElapsedTime().asSeconds() >= 0.03f) {
         m_clock.restart().asSeconds();
 
-        auto* cell_to_collapse = getLowestEntropyCell();
-        if (cell_to_collapse) {
-            cell_to_collapse->collapseCell();
-            waveFunctionCollapse(*cell_to_collapse);
-        }
+        if (m_cells_to_collapse_p_stack.empty())
+            collapseCell(getLowestEntropyCell());
+        else
+            waveFunctionCollapse();
     }
-    for (auto& row: m_cells)
-        for (auto& cell: row)
-            cell.updateTexture();
 }
 
 void Application::render() {
@@ -231,21 +228,26 @@ Cell* Application::getNeighbour(Cell& cell_ref, Cell::DIR dir) {
     }
     return nullptr;
 }
-void Application::waveFunctionCollapse(Cell& cell_ref) {
-    std::stack<Cell*> cells_to_collapse_p_stack;
-    cells_to_collapse_p_stack.push(&cell_ref);
-    while (!cells_to_collapse_p_stack.empty()) {
-        auto& cell = *cells_to_collapse_p_stack.top(); // взяли верхний элемент
-        cells_to_collapse_p_stack.pop(); // убрали его из стека (т.е. считаем его collapsed)
-        for (const auto& possible_direction: cell.m_possible_directions) {
-            auto& neighbour_cell = *getNeighbour(cell, possible_direction);
-            auto possible_edges = cell.getPossibleEdgesOnDirection(possible_direction);
-            if (!neighbour_cell.is_collapsed) {
-                bool was_reduced = neighbour_cell.reduceEntropyCell(possible_edges, possible_direction);
-                if (was_reduced)
-                    cells_to_collapse_p_stack.push(&neighbour_cell);
-            }
+Cell* Application::waveFunctionCollapse() {
+    auto& cell = *m_cells_to_collapse_p_stack.top(); // взяли верхний элемент
+    m_cells_to_collapse_p_stack.pop(); // убрали его из стека (т.е. считаем его collapsed)
+    for (const auto& possible_direction: cell.m_possible_directions) {
+        auto& neighbour_cell = *getNeighbour(cell, possible_direction);
+        auto possible_edges = cell.getPossibleEdgesOnDirection(possible_direction);
+        if (!neighbour_cell.is_collapsed) {
+            bool was_reduced = neighbour_cell.reduceEntropyCell(possible_edges, possible_direction);
+            if (was_reduced)
+                m_cells_to_collapse_p_stack.push(&neighbour_cell);
         }
+    }
+    cell.updateTexture();
+    return &cell;
+}
+
+void Application::collapseCell(Cell* cell_to_collapse) {
+    if (cell_to_collapse) {
+        cell_to_collapse->collapseCell();
+        m_cells_to_collapse_p_stack.push(cell_to_collapse);
     }
 }
 

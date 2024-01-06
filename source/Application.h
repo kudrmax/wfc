@@ -19,10 +19,12 @@ private:
     Cell* getLowestEntropyCell();
     std::pair<size_t, size_t> getCellsIndexesByReference(Cell&);
     Cell* getNeighbour(Cell& cell_ref, Cell::DIR dir);
-    void waveFunctionCollapse(Cell& cell);
+    Cell* waveFunctionCollapse();
+    void collapseCell(Cell* cell_to_collapse);
 private:
     sf::RenderWindow m_window{ sf::VideoMode(W, H), "WFC"};
     std::vector<std::vector<Cell>> m_cells;
     std::vector<Tile> m_tiles;
     sf::Clock m_clock;
+    std::stack<Cell*> m_cells_to_collapse_p_stack;
 };
