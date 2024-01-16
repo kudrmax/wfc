@@ -60,4 +60,4 @@ const TileType TILE_TYPE = TileType::GREEN_KNOTS; // изображения, к�
 
 ## Контакты
 
-[Telegram](t.me/kudrmax) - [GitHub](https://github.com/kudrmax)
+Макс Кудряшов - [Telegram](t.me/kudrmax) - [GitHub](https://github.com/kudrmax)
