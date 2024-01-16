@@ -1,11 +1,15 @@
 # Wave Function Collapse Simulation
 
-![Function Collapse Simulation](images/wfc.gif)
+![img_4.png](images/process.png)
 
 ## Описание
 
 Это проект на `C++`, использующий библиотеку `SFML` для создания симуляции алгоритма Wave Function Collapse (WFC),
 который используется для создания уникальных случайно сгенерированных паттернов.
+
+Суть алгоритма в том, что для изначально в каждой ячейке возможны все возможные тайлы, но как только какая-то тайл
+становится конкретным, то в остальных ячейках количество возможных тайлов изменяется.
+
 
 ## Технологии
 
@@ -14,11 +18,27 @@
 
 ## Пример
 
-![Function Collapse Example](images/example1.png)
-![Function Collapse Example](images/example3.png)
-![Function Collapse Example](images/example2.png)
+<img src="images/wfc.gif" width="100%">
 
-[//]: # (![Function Collapse Example]&#40;images/example 1.png&#41;)
+---
+
+![img.example1](images/example1.png)
+
+---
+
+![example2.png](images/example2.png)
+
+---
+
+![example3.png](images/example3.png)
+
+---
+
+![green_in_progress.png](images%2Fgreen_in_progress.png)
+
+---
+
+![img_4.png](images/process.png)
 
 ## Использование
 
@@ -37,34 +57,6 @@ const int BLOCK_COUNT_H = 12; // количество фрагментов ра�
 const float DELTA_TIME = 0.005f; // минимальное время между итерациями (0 для наискорейшей генерации)
 const TileType TILE_TYPE = TileType::GREEN_KNOTS; // изображения, которые будут использоваться для генерации
 ```
-
-## Установка
-
-1. Убедитесь, что у вас установлен `C++` компилятор и `SFML` библиотека.
-2. Клонируйте репозиторий:
-
-   ```bash
-   git clone https://github.com/your-username/fave-function-collapse.git
-   ```
-
-3. Перейдите в директорию проекта:
-
-   ```bash
-   cd fave-function-collapse
-   ```
-
-4. Соберите проект:
-
-   ```bash
-   g++ -o fave_function_collapse main.cpp -lsfml-graphics -lsfml-window -lsfml-system
-   ```
-
-5. Запустите приложение:
-
-   ```bash
-   ./fave_function_collapse
-   ```
-
 
 ## Контакты
 
