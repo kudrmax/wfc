@@ -33,9 +33,9 @@
 Каждый раз генерируется уникальное случайно сгенерированное изображение. 
 Доступны различные текстуры для генерации и есть возможность загружать собственные.
 
-<p align="left"><img src="images/example1.png" width="500px"></p>
-<p align="left"><img src="images/example2.png" width="500px"></p>
-<p align="left"><img src="images/example3.png" width="500px"></p>
+<p align="left"><img src="images/example1.png" width="100%"></p>
+<p align="left"><img src="images/example2.png" width="100%"></p>
+<p align="left"><img src="images/example3.png" width="100%"></p>
 
 
 ## 🎮 Использование
