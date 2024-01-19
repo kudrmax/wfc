@@ -70,6 +70,47 @@ void Application::fillTiles() {
             m_tiles.push_back({ "summer/waterturn 2.png", { 13, 12, 11, 11 }, 0 });
             m_tiles.push_back({ "summer/waterturn 3.png", { 14, 11, 11, 12 }, 0 });
             break;
+        case GAME_PIXEL:
+            m_tiles.push_back({ "summer-pixel/grass 0-pixelicious.png", { 0, 0, 0, 0 }, 0 });
+            m_tiles.push_back({ "summer-pixel/road 0-pixelicious.png", { 1, 1, 0, 1 }, 0 });
+            m_tiles.push_back({ "summer-pixel/road 1-pixelicious.png", { 1, 0, 1, 1 }, 0 });
+            m_tiles.push_back({ "summer-pixel/road 2-pixelicious.png", { 0, 1, 1, 1 }, 0 });
+            m_tiles.push_back({ "summer-pixel/road 3-pixelicious.png", { 1, 1, 1, 0 }, 0 });
+            m_tiles.push_back({ "summer-pixel/roadturn 0-pixelicious.png", { 1, 1, 0, 0 }, 0 });
+            m_tiles.push_back({ "summer-pixel/roadturn 1-pixelicious.png", { 1, 0, 0, 1 }, 0 });
+            m_tiles.push_back({ "summer-pixel/roadturn 2-pixelicious.png", { 0, 0, 1, 1 }, 0 });
+            m_tiles.push_back({ "summer-pixel/roadturn 3-pixelicious.png", { 0, 1, 1, 0 }, 0 });
+
+            m_tiles.push_back({ "summer-pixel/cliff 0-pixelicious.png", { 0, 2, 0, 2 }, 0 });
+            m_tiles.push_back({ "summer-pixel/cliff 1-pixelicious.png", { 2, 0, 2, 0 }, 0 });
+            m_tiles.push_back({ "summer-pixel/cliff 2-pixelicious.png", { 0, 3, 0, 3 }, 0 });
+            m_tiles.push_back({ "summer-pixel/cliff 3-pixelicious.png", { 4, 0, 4, 0 }, 0 });
+
+            m_tiles.push_back({ "summer-pixel/cliffcorner 0-pixelicious.png", { 2, 3, 0, 0 }, 0 });
+            m_tiles.push_back({ "summer-pixel/cliffcorner 1-pixelicious.png", { 4, 0, 0, 3 }, 0 });
+            m_tiles.push_back({ "summer-pixel/cliffcorner 2-pixelicious.png", { 0, 0, 7, 6 }, 0 });
+            m_tiles.push_back({ "summer-pixel/cliffcorner 3-pixelicious.png", { 0, 10, 2, 0 }, 0 });
+            m_tiles.push_back({ "summer-pixel/cliffturn 0-pixelicious.png", { 2, 2, 0, 0 }, 0 });
+            m_tiles.push_back({ "summer-pixel/cliffturn 1-pixelicious.png", { 2, 0, 0, 2 }, 0 });
+            m_tiles.push_back({ "summer-pixel/cliffturn 2-pixelicious.png", { 0, 0, 2, 3 }, 0 });
+            m_tiles.push_back({ "summer-pixel/cliffturn 3-pixelicious.png", { 0, 3, 4, 0 }, 0 });
+
+            m_tiles.push_back({ "summer-pixel/water_a 0-pixelicious.png", { 11, 11, 11, 11 }, 0 });
+            m_tiles.push_back({ "summer-pixel/water_b 0-pixelicious.png", { 11, 11, 11, 11 }, 0 });
+            m_tiles.push_back({ "summer-pixel/water_c 0-pixelicious.png", { 11, 11, 11, 11 }, 0 });
+            m_tiles.push_back({ "summer-pixel/watercorner 0-pixelicious.png", { 14, 16, 0, 0 }, 0 });
+            m_tiles.push_back({ "summer-pixel/watercorner 1-pixelicious.png", { 12, 0, 0, 16 }, 0 });
+            m_tiles.push_back({ "summer-pixel/watercorner 2-pixelicious.png", { 0, 0, 12, 12 }, 0 });
+            m_tiles.push_back({ "summer-pixel/watercorner 3-pixelicious.png", { 0, 12, 14, 0 }, 0 });
+            m_tiles.push_back({ "summer-pixel/waterside 0-pixelicious.png", { 11, 16, 0, 16 }, 0 });
+            m_tiles.push_back({ "summer-pixel/waterside 1-pixelicious.png", { 13, 0, 13, 11 }, 0 });
+            m_tiles.push_back({ "summer-pixel/waterside 2-pixelicious.png", { 0, 12, 11, 12 }, 0 });
+            m_tiles.push_back({ "summer-pixel/waterside 3-pixelicious.png", { 14, 11, 14, 0 }, 0 });
+            m_tiles.push_back({ "summer-pixel/waterturn 0-pixelicious.png", { 11, 11, 14, 16 }, 0 });
+            m_tiles.push_back({ "summer-pixel/waterturn 1-pixelicious.png", { 11, 16, 13, 11 }, 0 });
+            m_tiles.push_back({ "summer-pixel/waterturn 2-pixelicious.png", { 13, 12, 11, 11 }, 0 });
+            m_tiles.push_back({ "summer-pixel/waterturn 3-pixelicious.png", { 14, 11, 11, 12 }, 0 });
+            break;
         case PLATFORMER:
             m_tiles.push_back({ "platformer/dirt 0.png", { 0, 0, 0, 0 }, 0 });
             m_tiles.push_back({ "platformer/dirt 0.png", { 0, 0, 3, 0 }, 0 });

@@ -10,12 +10,13 @@ enum TileType {
     TRAIN,
     POLKA,
     GAME, // betta version
+    GAME_PIXEL, // betta version
     PLATFORMER // betta version
 };
 
 // настраиваемые вручную параметры
 const int H = 800; // высота окна
-const int BLOCK_COUNT_H = 4; // количество фрагментов разбиения по вертикали
+const int BLOCK_COUNT_H = 8; // количество фрагментов разбиения по вертикали
 const float DELTA_TIME = 0.000f; // минимальное время между итерациями (0 для наискорейшей генерации)
 const TileType TILE_TYPE = TileType::GAME; // изображения, которые будут использоваться для генерации
 
